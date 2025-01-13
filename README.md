@@ -6,12 +6,12 @@ For each test, if it supports custom hex strings, the special strings, or simila
 
 ## Toolchains
 
-1. Rust (install steos)
+1. [Rust](https://rustup.rs/)
 2. C++ (install steps)
 
 ## Running Tests
 
-TODO
+The main test case is in [run.sh](/scripts/run.sh), but each individual test can easily be extracted from there.
 
 ## Test Cases
 
@@ -26,8 +26,9 @@ The main test cases are:
 - `1.0e+3` - no_positive_exponent_sign
 - `1.0e3` - required_exponent_sign
 - `1e3` - no_exponent_without_fraction
-- `1.e3` - TODO: Fix name
-- `.1e3` - TODO: Fix name
+- `1.e3` - required_integer_digits_with_exponent
+- `.1e3` - required_fraction_digits_with_exponent
+- `.e3` - required_mantissa_digits_with_exponent
 - `01` - no_integer_leading_zeros
 - `01.0` - no_float_leading_zeros
 - `1.0` - required_exponent_notation
@@ -55,3 +56,5 @@ Test cases that might depend on radix support and more include:
 - base_suffix
 - case_sensitive_base_prefix
 - case_sensitive_base_suffix
+- required_base_prefix
+- required_base_suffix
