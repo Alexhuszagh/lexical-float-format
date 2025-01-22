@@ -1,7 +1,8 @@
 TODO.md
 
-# custom directory for all t argets, similar to rust
+# custom directory for all targets, similar to rust
 target/
+temp/
 
 __pycache__/
 *.py[cod]

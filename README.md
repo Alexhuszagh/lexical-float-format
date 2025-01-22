@@ -58,3 +58,51 @@ Test cases that might depend on radix support and more include:
 - case_sensitive_base_suffix
 - required_base_prefix
 - required_base_suffix
+
+## Test Data Format
+
+We use a TOML data format for each language, which dictates the runner and type for the tests so new float formats can be added with minimal effort. The format, along with the defaults are below. The 3 top-level keys supported are:
+- format
+- floats
+- integers
+
+```toml
+[format]
+# the title to print when running the test
+title = "Rust - Decimal Literal"
+# can be a literal or a string
+literal = true
+# the programming language to use
+language = 'rust'
+
+[[floats]]
+# the value to test (required)
+value = "0.1"
+# the title for the test (required)
+title = "Simple"
+# short-hand flags when writing a table (optional)
+flags = ""
+# if the format is supported if the test passes or fails
+# the valid values are "pass" and "fail". defaults to "pass"
+supported = "pass"
+
+[[floats]]
+# the value to test (required)
+value = ".1"
+# the title for the test (required)
+title = "Required integer digits."
+# short-hand flags when writing a table (optional)
+flags = "I/R"
+supported = "pass"
+
+[[integers]]
+# the value to test (required)
+value = ".1"
+# the title for the test (required)
+title = "Required integer digits."
+# short-hand flags when writing a table (optional)
+flags = "I/R"
+supported = "pass"
+```
+
+`value` can be either a value or an array of values, in which case of an array, will check that all have the same result or an error will occur, notifying that more complex logic is required.

@@ -9,11 +9,8 @@ script_dir=$(dirname "${BASH_SOURCE[0]}")
 script_home=$(realpath "${script_dir}")
 home=$(dirname "${script_home}")
 
-src_dir="${home}/src"
-target_dir="${home}/target"
-mkdir -p "${target_dir}"
-
-# list our toolchain versions
-rustc --version
-rustc "${src_dir}/rust.rs" -o "${target_dir}/rust"
-"${target_dir}/rust"
+if [[ -z "${PYTHON}" ]]; then
+    PYTHON="python"
+fi
+# shellcheck disable=SC2068
+${PYTHON[@]} "${script_home}/format-validator.py" -d "${home}/data" -o "Results.md"
