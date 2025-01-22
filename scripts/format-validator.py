@@ -137,7 +137,7 @@ def main(argv: list[str] | None = None):
         subprocess_kwds['stdout'] = subprocess.STDOUT
         subprocess_kwds['stderr'] = subprocess.STDOUT
 
-    shutil.rmtree(temp)
+    shutil.rmtree(temp, ignore_errors=True)
     temp.mkdir(exist_ok=True)
 
     files: list[Path] = []
