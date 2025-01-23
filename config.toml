@@ -9,3 +9,7 @@ python = [
     "python3.12",
     "python3.13"
 ]
+
+[langversion]
+c = ["", "c89", "c90", "c99", "c11", "c17", "c23"]
+cpp = ["c++11"]

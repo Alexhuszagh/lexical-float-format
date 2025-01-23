@@ -1,0 +1,12 @@
+[metadata]
+title = "C - Decimal Literal - {}"
+literal = true
+language = 'c'
+description = 'C literal decimal numbers. Does not support base prefixes.'
+
+# Non-Digit Separator Flags
+
+[[floats]]
+value = "0.1"
+title = "Simple"
+flags = ""

@@ -10,18 +10,21 @@
     following environment variables:
     - `rustc`: `RUSTC`
     - `python`: `PYTHON`
+    - `cc`: `CC`
+    - `c++`: `CPP`
 
     Or these can be specified in a config file.
 '''
 
 import argparse
 import copy
+import itertools as it
 import os
 import re
 import shutil
 import subprocess
 import tomllib
-import uuid
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -30,6 +33,7 @@ __author__ = 'Alex Huszagh <ahuszagh@gmail.com>'
 
 home = Path(__file__).absolute().parent.parent
 temp = home / 'temp'
+lang = home / 'lang'
 verbose = False
 
 
@@ -61,6 +65,8 @@ class Language:
     extension: str
     floating: str
     integer: str
+    # Optional override for the language version
+    langversion: str | None = None
     # Optional override for the command
     command: str | None = None
 
@@ -77,6 +83,10 @@ class Language:
                 return self._rust_build(code, literal)
             case 'python':
                 return self._python_interpret(code, literal)
+            case 'c':
+                return self._cc_build(code, literal)
+            case 'cpp':
+                return self._cpp_build(code, literal)
             case _:
                 raise ValueError(f'Got an unsupported language of "{self.name}".')
 
@@ -88,21 +98,54 @@ class Language:
                 return self._rustc_version
             case 'python':
                 return self._python_version
+            case 'c':
+                return self._cc_version
+            case 'cpp':
+                return self._cpp_version
             case _:
                 raise ValueError(f'Got an unsupported language of "{self.name}".')
 
-    def create_path(self) -> Path:
+    def create_path(self, directory: Path = temp) -> Path:
         '''Create a new, unique path for testing.'''
-        return temp / f'{uuid.uuid4()}{self.extension}'
+        return directory / f'testing{self.extension}'
 
     def write_code(self, code: str) -> Path:
         '''Write our test code to a file for testing.'''
+        # TODO: Might need our csproj or similar for some languages... SIGH
         path = self.create_path()
         with path.open(mode='w', encoding='utf-8') as file:
             file.write(code)
         return path
 
-    # RUST
+    # HELPERS
+
+    @staticmethod
+    def _split(value: str) -> list[str]:
+        return value.strip().split()
+
+    def _get_or_fallbacks(
+        self,
+        default: list[str],
+        envvars: list[str] | None = None,
+        fallbacks: list[str] | None = None,
+    ) -> list[str]:
+        '''Get the command, using environment variables or overrides if not found.'''
+
+        if self.command is not None:
+            return self._split(self.command)
+
+        if envvars is not None:
+            for envvar in envvars:
+                cmd = os.environ.get(envvar)
+                if cmd is not None:
+                    return self._split(cmd)
+
+        if fallbacks is not None:
+            for fallback in fallbacks:
+                if shutil.which(fallback) is not None:
+                    return [fallback]
+
+        return default
 
     @staticmethod
     def _getoutput(cmd: list[str]) -> str:
@@ -122,47 +165,121 @@ class Language:
             print('Received: ' + result.stdout)
         return result
 
-    @property
-    def _rustc(self) -> list[str]:
-        if self.command is not None:
-            return self.command.strip().split()
-        return os.environ.get('RUSTC', 'rustc').strip().split()
-
-    @property
-    def _rustc_version(self) -> str:
-        output = self._getoutput([*self._rustc, '--version'])
-        return re.match(r'^rustc (\d+\.\d+(?:\.\d+)?).*$', output).group(1)
-
-    def _rust_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
-        '''Run our Rust compilation build and test.'''
+    def _build_and_test(
+        self,
+        code: str,
+        literal: bool,
+        cmd: Callable[[Path, Path], list[str]],
+    ) -> subprocess.CompletedProcess:
+        '''Compile and optionally run the compiled code.'''
 
         path = self.write_code(code)
         output = path.parent / path.stem
-        result = self._run([*self._rustc, str(path), '-o', str(output)])
+        result = self._run(cmd(path, output))
         if not literal and result.returncode != 0:
-            raise RuntimeError(f'Got an unexpected result running code "{code}" for language "{repr(self)}".')
+            msg = f'Got an unexpected result compiling code "{code}" for language "{repr(self)}".'
+            raise RuntimeError(msg)
         if not literal:
             result = self._run([str(output)])
 
         return result
 
+    # RUST
+
+    @property
+    def _rustc(self) -> list[str]:
+        return self._get_or_fallbacks(default=['rustc'], envvars=['RUSTC'])
+
+    @property
+    def _rustc_version(self) -> str:
+        output = self._getoutput([*self._rustc, '--version'])
+        return re.match(r'^rustc (\d+\.\d+(?:\.\d+)?)', output).group(1)
+
+    def _rust_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+        '''Run our Rust compilation build and test.'''
+
+        def to_cmd(input: Path, output: Path) -> str:
+            return [*self._rustc, str(input), '-o', str(output)]
+
+        return self._build_and_test(code, literal, to_cmd)
+
     # PYTHON
 
     @property
     def _python(self) -> list[str]:
-        if self.command is not None:
-            return self.command.strip().split()
-        return os.environ.get('PYTHON', 'python').strip().split()
+        return self._get_or_fallbacks(
+            default=['python'],
+            envvars=['PYTHON'],
+            fallbacks=['python', 'python3', 'python2'],
+        )
 
     @property
     def _python_version(self) -> str:
         output = self._getoutput([*self._python, '--version'])
-        return re.match(r'^Python (\d+\.\d+(?:\.\d+)?).*$', output).group(1)
+        return re.match(r'^Python (\d+\.\d+(?:\.\d+)?)', output).group(1)
 
     def _python_interpret(self, code: str, literal: bool) -> subprocess.CompletedProcess:
         '''Interpret our Python code for testing.'''
         _ = literal
         return self._run([*self._python, '-c', code])
+
+    # C
+
+    @property
+    def _cc(self) -> list[str]:
+        return self._get_or_fallbacks(
+            default=['cc'],
+            envvars=['CC'],
+            fallbacks=['cc', 'gcc', 'clang', 'cl'],
+        )
+
+    @property
+    def _cc_version(self) -> str:
+        cc = self._cc
+        if cc[0] == 'cl':
+            raise ValueError('MSVC is currently unsupported.')
+        output = self._getoutput([*cc, '--version'])
+        return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
+
+    def _cc_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+        '''Run our C compilation build and test.'''
+
+        def to_cmd(input: Path, output: Path) -> str:
+            cmd = [*self._cc, str(input), '-o', str(output)]
+            if self.langversion:
+                cmd.append(f'-std={self.langversion}')
+            return cmd
+
+        return self._build_and_test(code, literal, to_cmd)
+
+    # C++
+
+    @property
+    def _cpp(self) -> list[str]:
+        return self._get_or_fallbacks(
+            default=['c++'],
+            envvars=['CPP'],
+            fallbacks=['c++', 'g++', 'clang++', 'cl'],
+        )
+
+    @property
+    def _cpp_version(self) -> str:
+        cpp = self._cpp
+        if cpp[0] == 'cl':
+            raise ValueError('MSVC is currently unsupported.')
+        output = self._getoutput([*cpp, '--version'])
+        return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
+
+    def _cpp_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+        '''Run our C compilation build and test.'''
+
+        def to_cmd(input: Path, output: Path) -> str:
+            cmd = [*self._cpp, str(input), '-o', str(output)]
+            if self.langversion:
+                cmd.append(f'-std={self.langversion}')
+            return cmd
+
+        return self._build_and_test(code, literal, to_cmd)
 
 
 @dataclass
@@ -200,7 +317,7 @@ class File:
 
         return cls(path=path, metadata=metadata, floats=floats, integers=integers)
 
-    def run(self, command: str | None = None) -> str:
+    def run(self, command: str | None = None, langversion: str | None = None) -> str:
         '''
         Run the success or failure test cases.
 
@@ -220,7 +337,7 @@ class File:
         '''
 
         # create our header
-        language = self.get_language(command)
+        language = self.get_language(command, langversion)
         version = language.get_version()
         title = self.metadata.title.format(version)
         result = [f'## \x1b[1;36m{title}\x1b[0m', '']
@@ -246,9 +363,9 @@ class File:
 
         return '\n'.join(result)
 
-    def get_language(self, command: str | None = None) -> Language:
+    def get_language(self, command: str | None = None, langversion: str | None = None) -> Language:
         '''Get the language associated with the format version.'''
-        return self.metadata.get_language(command)
+        return self.metadata.get_language(command, langversion)
 
 
 @dataclass
@@ -261,13 +378,14 @@ class Metadata:
     description: str | None = None
     base: int = 10
 
-    def get_language(self, command: str | None = None) -> Language:
+    def get_language(self, command: str | None = None, langversion: str | None = None) -> Language:
         '''Get the language specification from the name.'''
 
-        language = languages[self.language]
+        language = copy.copy(languages[self.language])
         if command is not None:
-            language = copy.copy(language)
             language.command = command
+        if langversion is not None:
+            language.langversion = langversion
         return language
 
 
@@ -390,7 +508,7 @@ def main(argv: list[str] | None = None):
     verbose = args.verbose
 
     # load our config
-    config = {'language': {}}
+    config = {'language': {}, 'langversion': {}}
     if args.config is not None:
         with Path(args.config).open(encoding='utf-8') as file:
             config = tomllib.loads(file.read())
@@ -415,40 +533,50 @@ def main(argv: list[str] | None = None):
     logger.log('# \x1b[1;32mResults\x1b[0m')
     for case in cases:
         commands = config['language'].get(case.metadata.language, [None])
-        for command in commands:
-            logger.log('\n' + case.run(command=command))
+        langversions = config['langversion'].get(case.metadata.language, [None])
+        for command, langversion in it.product(commands, langversions):
+            logger.log('\n' + case.run(command=command, langversion=langversion))
+
+
+def read_string(path: Path) -> str:
+    '''Read a file to string.'''
+    with path.open(encoding='utf-8') as file:
+        return file.read()
 
 
 languages = {
     'rust': Language(
         name='rust',
-        literal='''
-pub fn main() {{
-    let _: {type} = {value};
-}}
-''',
-        string='''
-pub fn main() {{
-    let _ = "{value}".parse::<{type}>().unwrap();
-}}
-''',
+        literal=read_string(lang / 'literal.rs'),
+        string=read_string(lang / 'string.rs'),
         extension='.rs',
         floating='f64',
         integer='i64',
     ),
     'python': Language(
         name='python',
-        literal='{value}',
-        string='''
-def as_int(x):
-    return int(x, {base})
-
-{type}("{value}")
-''',
+        literal=read_string(lang / 'literal.py'),
+        string=read_string(lang / 'string.py'),
         extension='.py',
         floating='float',
-        integer='as_int',
-    )
+        integer='int',
+    ),
+    'c': Language(
+        name='c',
+        literal=read_string(lang / 'literal.c'),
+        string=read_string(lang / 'string.c'),
+        extension='.c',
+        floating='f64',
+        integer='i32',
+    ),
+    'cpp': Language(
+        name='cpp',
+        literal=read_string(lang / 'literal.cpp'),
+        string=read_string(lang / 'string.cpp'),
+        extension='.cpp',
+        floating='f64',
+        integer='i32',
+    ),
 }
 
 

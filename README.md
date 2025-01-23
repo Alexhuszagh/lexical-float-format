@@ -7,7 +7,8 @@ For each test, if it supports custom hex strings, the special strings, or simila
 ## Toolchains
 
 1. [Rust](https://rustup.rs/)
-2. C++ (install steps)
+2. [Python](https://www.python.org/downloads/)
+3. [C#](https://dotnet.microsoft.com/en-us/download)
 
 ## Running Tests
 
@@ -62,7 +63,7 @@ Test cases that might depend on radix support and more include:
 ## Test Data Format
 
 We use a TOML data format for each language, which dictates the runner and type for the tests so new float formats can be added with minimal effort. The format, along with the defaults are below. The 3 top-level keys supported are:
-- format
+- metadata
 - floats
 - integers
 
@@ -74,7 +75,7 @@ title = "Rust - Decimal Literal - {}"
 # can be a literal or a string
 literal = true
 # the programming language to use
-language = 'rust'
+language = "rust"
 # An optional radix for the number (defaults to 10)
 base = 10
 
@@ -109,3 +110,5 @@ expected = "pass"
 ```
 
 `value` can be either a value or an array of values, in which case of an array, will check that all have the same result or an error will occur, notifying that more complex logic is required.
+
+Additional settings, such as language compiler versions and lang versions can be specified such as in [config.toml](/config.toml).
