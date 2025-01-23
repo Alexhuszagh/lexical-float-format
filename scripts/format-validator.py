@@ -9,9 +9,13 @@
     The compilers can be overwritten using the
     following environment variables:
     - `rustc`: `RUSTC`
+    - `python`: `PYTHON`
+
+    Or these can be specified in a config file.
 '''
 
 import argparse
+import copy
 import os
 import re
 import shutil
@@ -26,10 +30,7 @@ __author__ = 'Alex Huszagh <ahuszagh@gmail.com>'
 
 home = Path(__file__).absolute().parent.parent
 temp = home / 'temp'
-subprocess_kwds = {
-    'stdout': subprocess.DEVNULL,
-    'stderr': subprocess.DEVNULL,
-}
+verbose = False
 
 
 @dataclass
@@ -60,6 +61,8 @@ class Language:
     extension: str
     floating: str
     integer: str
+    # Optional override for the command
+    command: str | None = None
 
     def template(self, literal: bool) -> str:
         '''Get the template string for the test.'''
@@ -101,25 +104,45 @@ class Language:
 
     # RUST
 
+    @staticmethod
+    def _getoutput(cmd: list[str]) -> str:
+        if verbose:
+            print('Command: ' + ' '.join(cmd))
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='utf-8')
+        if verbose:
+            print('Output: ' + result.stdout)
+        return result.stdout
+
+    @staticmethod
+    def _run(cmd: list[str]) -> subprocess.CompletedProcess:
+        if verbose:
+            print('Running: ' + ' '.join(cmd))
+        result = subprocess.run(cmd, capture_output=True, encoding='utf-8')
+        if verbose:
+            print('Received: ' + result.stdout)
+        return result
+
     @property
     def _rustc(self) -> list[str]:
+        if self.command is not None:
+            return self.command.strip().split()
         return os.environ.get('RUSTC', 'rustc').strip().split()
 
     @property
     def _rustc_version(self) -> str:
-        output = subprocess.getoutput([*self._rustc, '--version'])
-        return re.match(r'^rustc (\d+\.\d+(?:\.\d+)?) .*$', output).group(1)
+        output = self._getoutput([*self._rustc, '--version'])
+        return re.match(r'^rustc (\d+\.\d+(?:\.\d+)?).*$', output).group(1)
 
     def _rust_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
         '''Run our Rust compilation build and test.'''
 
         path = self.write_code(code)
         output = path.parent / path.stem
-        result = subprocess.run([*self._rustc, str(path), '-o', str(output)], **subprocess_kwds)
+        result = self._run([*self._rustc, str(path), '-o', str(output)])
         if not literal and result.returncode != 0:
             raise RuntimeError(f'Got an unexpected result running code "{code}" for language "{repr(self)}".')
         if not literal:
-            result = subprocess.run([str(output)], **subprocess_kwds)
+            result = self._run([str(output)])
 
         return result
 
@@ -127,17 +150,19 @@ class Language:
 
     @property
     def _python(self) -> list[str]:
+        if self.command is not None:
+            return self.command.strip().split()
         return os.environ.get('PYTHON', 'python').strip().split()
 
     @property
     def _python_version(self) -> str:
-        output = subprocess.getoutput([*self._python, '--version'])
+        output = self._getoutput([*self._python, '--version'])
         return re.match(r'^Python (\d+\.\d+(?:\.\d+)?).*$', output).group(1)
 
     def _python_interpret(self, code: str, literal: bool) -> subprocess.CompletedProcess:
         '''Interpret our Python code for testing.'''
         _ = literal
-        return subprocess.run([*self._python, '-c', code], **subprocess_kwds)
+        return self._run([*self._python, '-c', code])
 
 
 @dataclass
@@ -175,7 +200,7 @@ class File:
 
         return cls(path=path, metadata=metadata, floats=floats, integers=integers)
 
-    def run(self) -> str:
+    def run(self, command: str | None = None) -> str:
         '''
         Run the success or failure test cases.
 
@@ -195,7 +220,7 @@ class File:
         '''
 
         # create our header
-        language = self.get_language()
+        language = self.get_language(command)
         version = language.get_version()
         title = self.metadata.title.format(version)
         result = [f'## \x1b[1;36m{title}\x1b[0m', '']
@@ -221,9 +246,9 @@ class File:
 
         return '\n'.join(result)
 
-    def get_language(self) -> Language:
+    def get_language(self, command: str | None = None) -> Language:
         '''Get the language associated with the format version.'''
-        return self.metadata.get_language()
+        return self.metadata.get_language(command)
 
 
 @dataclass
@@ -236,9 +261,14 @@ class Metadata:
     description: str | None = None
     base: int = 10
 
-    def get_language(self) -> Language:
+    def get_language(self, command: str | None = None) -> Language:
         '''Get the language specification from the name.'''
-        return languages[self.language]
+
+        language = languages[self.language]
+        if command is not None:
+            language = copy.copy(language)
+            language.command = command
+        return language
 
 
 @dataclass
@@ -342,6 +372,8 @@ class Case:
 def main(argv: list[str] | None = None):
     '''Run our main entry point.'''
 
+    global verbose
+
     parser = argparse.ArgumentParser(
         prog='format validator',
         description='Number format validator for various programming languages.',
@@ -349,14 +381,19 @@ def main(argv: list[str] | None = None):
     parser.add_argument('-f', '--file', nargs='*', help='a list of files to process')
     parser.add_argument('-d', '--directory', nargs='*', help='a directory of files to process')
     parser.add_argument('-o', '--output', help='an optional path to write the data to file')
+    parser.add_argument('-c', '--config', help='an optional config file to load')
     parser.add_argument('-v', '--verbose', action='store_true')
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {__version__}')
     args = parser.parse_args(argv)
 
     # ensure we print everything to stdout if we're piping the process
-    if args.verbose:
-        subprocess_kwds['stdout'] = subprocess.STDOUT
-        subprocess_kwds['stderr'] = subprocess.STDOUT
+    verbose = args.verbose
+
+    # load our config
+    config = {'language': {}}
+    if args.config is not None:
+        with Path(args.config).open(encoding='utf-8') as file:
+            config = tomllib.loads(file.read())
 
     # cleanup a previous run, if it exists
     shutil.rmtree(temp, ignore_errors=True)
@@ -377,7 +414,9 @@ def main(argv: list[str] | None = None):
     logger = Logger(args.output)
     logger.log('# \x1b[1;32mResults\x1b[0m')
     for case in cases:
-        logger.log('\n' + case.run())
+        commands = config['language'].get(case.metadata.language, [None])
+        for command in commands:
+            logger.log('\n' + case.run(command=command))
 
 
 languages = {

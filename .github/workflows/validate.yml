@@ -11,7 +11,18 @@ jobs:
         with:
           submodules: recursive
       - uses: dtolnay/rust-toolchain@stable
+      - uses: LizardByte/setup-python-action@master
+        with:
+          python-version: '2.7'
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: |
+            # NOTE: Github actions doesn't support 3.6 and older.
+            3.7
+            3.8
+            3.9
+            3.10
+            3.11
+            3.12
+            3.13
       - run: bash scripts/run.sh

@@ -12,4 +12,4 @@ if [[ -z "${PYTHON}" ]]; then
     PYTHON="python"
 fi
 # shellcheck disable=SC2068
-${PYTHON[@]} "${script_home}/format-validator.py" -d "${home}/data" -o "${home}/Results.md"
+${PYTHON[@]} "${script_home}/format-validator.py" -d "${home}/data" -o "${home}/Results.md" -c "${home}/config.toml"
