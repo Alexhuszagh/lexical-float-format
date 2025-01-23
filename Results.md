@@ -1,6 +1,6 @@
 # Results
 
-## Rust - Binary Literal
+## Rust - Binary Literal - 1.81.0
 
 Rust literal binary numbers. Requires base prefixes. Does not suppport floats.
 
@@ -22,7 +22,7 @@ Rust literal binary numbers. Requires base prefixes. Does not suppport floats.
 | I/s | ❌ | _-0b11 | Integer sign digit separator. |
 | I/c | ❌ | __-0b11 | Integer sign consecutive digit separator. |
 
-## Rust - Decimal Literal
+## Rust - Decimal Literal - 1.81.0
 
 Rust literal decimal numbers. Does not support base prefixes.
 
@@ -79,7 +79,7 @@ Rust literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Rust - Decimal String
+## Rust - Decimal String - 1.81.0
 
 Parsing numbers via `FromStr`. Does not support base prefixes.
 
@@ -136,7 +136,7 @@ Parsing numbers via `FromStr`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Rust - Hex Literal
+## Rust - Hex Literal - 1.81.0
 
 Rust literal hexadecimal numbers. Requires base prefixes. Does not suppport floats.
 
@@ -158,7 +158,7 @@ Rust literal hexadecimal numbers. Requires base prefixes. Does not suppport floa
 | I/s | ❌ | _-0x11 | Integer sign digit separator. |
 | I/c | ❌ | __-0x11 | Integer sign consecutive digit separator. |
 
-## Rust - Octal Literal
+## Rust - Octal Literal - 1.81.0
 
 Rust literal octal numbers. Requires base prefixes. Does not suppport floats.
 

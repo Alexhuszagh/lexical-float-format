@@ -11,9 +11,9 @@
     - `rustc`: `RUSTC`
 '''
 
-import typing
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import tomllib
@@ -33,95 +33,231 @@ subprocess_kwds = {
 
 
 @dataclass
-class TestFile:
-    format: 'TestFormat'
-    floats: list['TestCase']
-    integers: list['TestCase']
+class Logger:
+    '''Custom logger that also logs to an output file.'''
 
-    @classmethod
-    def load(cls, data: dict[str, typing.Any]):
-        format = TestFormat(**data['format'])
-        floats = [TestCase(**i) for i in data.get('floats', [])]
-        integers = [TestCase(**i) for i in data.get('integers', [])]
-        return cls(format=format, floats=floats, integers=integers)
+    output: str | None
 
-    def run(self, output: str | None = None) -> str:
-        result = [f'## \x1b[1;36m{self.format.title}\x1b[0m', '']
-        if self.format.description is not None:
-            result += [self.format.description, '']
-        result += ['| Flag | Pass | Value | Title |', '|:-:|:-:|:-:|:-:|']
-        language = self.format.language
-        literal = self.format.literal
-        for case in self.floats:
-            result.append(case.test(language, literal, types[(language, 'float')]))
-        for case in self.integers:
-            result.append(case.test(language, literal, types[(language, 'integer')]))
+    def log(self, message: str) -> None:
+        '''Log our data to stdout, and optionally to file with no escape sequences.'''
 
-        print('\n' + '\n'.join(result))
-        if output is not None:
-            result[0] = f'## {self.format.title}'
-            with open(output, mode='a+', encoding='utf-8') as file:
-                print('\n' + '\n'.join(result), file=file)
+        print(message)
+        if self.output is None:
+            return
+
+        with open(self.output, mode='a+', encoding='utf-8') as file:
+            no_ansi = re.sub(r'\x1b\[[0-9;]*m', '', message)
+            print(no_ansi, file=file)
 
 
 @dataclass
-class TestFormat:
+class Language:
+    '''Specification for a programming language or data interchange format.'''
+
+    name: str
+    literal: str
+    string: str
+    extension: str
+    floating: str
+    integer: str
+
+    def template(self, literal: bool) -> str:
+        '''Get the template string for the test.'''
+        return self.literal if literal else self.string
+
+    def build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+        '''Build the code snippet, optionally running it, and returning the result.'''
+
+        # build and process our results
+        match self.name:
+            case 'rust':
+                return self._rust_build(code, literal)
+            case _:
+                raise ValueError(f'Got an unsupported language of "{self.name}".')
+
+    def get_version(self) -> str:
+        '''Get the current version of the used interpreter.'''
+
+        match self.name:
+            case 'rust':
+                return self._rustc_version
+            case _:
+                raise ValueError(f'Got an unsupported language of "{self.name}".')
+
+    def create_path(self) -> Path:
+        '''Create a new, unique path for testing.'''
+        return temp / f'{uuid.uuid4()}{self.extension}'
+
+    def write_code(self, code: str) -> Path:
+        '''Write our test code to a file for testing.'''
+        path = self.create_path()
+        with path.open(mode='w', encoding='utf-8') as file:
+            file.write(code)
+        return path
+
+    @property
+    def _rustc(self) -> str:
+        return os.environ.get('RUSTC', 'rustc')
+
+    @property
+    def _rustc_version(self) -> str:
+        output = subprocess.getoutput([self._rustc, '--version'])
+        return re.match(r'^rustc (\d+\.\d+(?:\.\d+)?) .*$', output).group(1)
+
+    def _rust_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+        '''Run our Rust compilation build and test.'''
+
+        path = self.write_code(code)
+        output = path.parent / path.stem
+        result = subprocess.run([self._rustc, str(path), '-o', str(output)], **subprocess_kwds)
+        if not literal and result.returncode != 0:
+            raise RuntimeError(f'Got an unexpected result running code "{code}" for language "{repr(self)}".')
+        if not literal:
+            result = subprocess.run([str(output)], **subprocess_kwds)
+
+        return result
+
+
+@dataclass
+class File:
+    '''A collection of test cases from a given file.'''
+
+    path: Path
+    metadata: 'Metadata'
+    floats: list['Case']
+    integers: list['Case']
+
+    @classmethod
+    def load(cls, path: Path):
+        '''
+        Load the test data from the TOML file.
+
+        The data format is similar to:
+            {
+                "metadata": {
+                    "title": "",
+                    "literal": "",
+                    "language": "",
+                },
+                "floats": [...],
+                "integers": [...],
+            }
+        '''
+
+        with path.open(encoding='utf-8') as file:
+            data = tomllib.loads(file.read())
+
+        metadata = Metadata(**data['metadata'])
+        floats = [Case(**i) for i in data.get('floats', [])]
+        integers = [Case(**i) for i in data.get('integers', [])]
+
+        return cls(path=path, metadata=metadata, floats=floats, integers=integers)
+
+    def run(self) -> str:
+        '''
+        Run the success or failure test cases.
+
+        This returns the data formatted as a markdown table.
+
+        For example:
+
+            ## Rust - Binary Literal - 1.81.0
+
+            Rust literal binary numbers. Requires base prefixes. Does not suppport floats.
+
+            | Flag | Pass | Value | Title |
+            |:-:|:-:|:-:|:-:|
+            |  | ❌ | 0b0.1 | Simple |
+            | N/I | ❌ | 0b001 | No integer leading zeros. |
+            | e/P | ✅ | 0B1 | Case-sensitive base prefix. |
+        '''
+
+        # create our header
+        language = self.get_language()
+        version = language.get_version()
+        title = self.metadata.title.format(version)
+        result = [f'## \x1b[1;36m{title}\x1b[0m', '']
+        if self.metadata.description is not None:
+            result += [self.metadata.description, '']
+        result += ['| Flag | Pass | Value | Title |', '|:-:|:-:|:-:|:-:|']
+
+        # run all our test cases
+        for case in self.floats:
+            result.append(case.run(language, self.metadata.literal, language.floating))
+        for case in self.integers:
+            result.append(case.run(language, self.metadata.literal, language.integer))
+
+        return '\n'.join(result)
+
+    def get_language(self) -> Language:
+        '''Get the language associated with the format version.'''
+        return self.metadata.get_language()
+
+
+@dataclass
+class Metadata:
+    '''Specifies the metadata for the test.'''
+
     title: str
     literal: bool
     language: str
     description: str | None = None
 
+    def get_language(self) -> Language:
+        '''Get the language specification from the name.'''
+        return languages[self.language]
+
 
 @dataclass
-class TestCase:
+class Case:
+    '''A single test case within the results.'''
+
     value: str | list[str]
     title: str
     flags: str = ''
-    supported: str = 'pass'
+    expected: str = 'pass'
 
-    def test(self, language: str, literal: bool, type: str) -> str:
-        success = self.run(language, literal, type)
-        code = '✅' if success else '❌'
+    def succeeded(self, process: subprocess.CompletedProcess) -> bool:
+        '''Determine if the process completed successfully.'''
+        if self.expected == 'pass':
+            return process.returncode == 0
+        return process.returncode != 0
+
+    @staticmethod
+    def checkmark(success: bool) -> str:
+        '''Convert the success or failure to a checkmark.'''
+        return '✅' if success else '❌'
+
+    def run(self, language: Language, literal: bool, data_type: str) -> str:
+        '''Run a single test case for a given language.'''
+        check = self.checkmark(self.test(language, literal, data_type))
         value = self.value if isinstance(self.value, str) else self.value[0]
-        return f'| {self.flags} | {code} | {value} | {self.title} |'
+        return f'| {self.flags} | {check} | {value} | {self.title} |'
 
-    def run(self, language: str, literal: bool, type: str) -> bool:
+    def test(self, language: Language, literal: bool, data_type: str) -> bool:
+        '''Test one or more values and return if the test passed.'''
         if isinstance(self.value, str):
-            return self.run_one(self.value, language, literal, type)
-        results = [self.run_one(i, language, literal, type) for i in self.value]
+            return self.test_one(language, self.value, literal, data_type)
+        return self.test_many(language, self.value, literal, data_type)
+
+    def test_one(self, language: Language, value: str, literal: bool, data_type: str) -> bool:
+        '''Run a test case for a single value.'''
+        template = language.template(literal)
+        code = template.format(type=data_type, value=value)
+        process = language.build(code, literal)
+        return self.succeeded(process)
+
+    def test_many(self, language: Language, values: list[str], literal: bool, data_type: str) -> bool:
+        '''Run a test case for multiple values.'''
+        results = [self.test_one(language, i, literal, data_type) for i in values]
         if not all(i == results[0] for i in results[1:]):
             raise ValueError(f'Got inconsistent results for "{repr(self)}".')
         return results[0]
 
-    def run_one(self, value: str, language: str, literal: bool, type: str) -> bool:
-        template = templates[(language, literal)]
-        code = template.format(type=type, value=value)
-        path = temp / f'{uuid.uuid4()}{extensions[language]}'
-        with path.open(mode='w', encoding='utf-8') as file:
-            file.write(code)
-        try:
-            match language:
-                case 'rust':
-                    return self.rust(path, literal)
-                case _:
-                    raise ValueError(f'Got an unknown language of "{language}".')
-        finally:
-            path.unlink(missing_ok=True)
-
-    def rust(self, path: Path, literal: bool) -> bool:
-        rustc = os.environ.get('RUSTC', 'rustc')
-        output = path.parent / path.stem
-        result = subprocess.run([rustc, str(path), '-o', str(output)], **subprocess_kwds)
-        if not literal and result.returncode != 0:
-            raise RuntimeError(f'Got an unexpected result running test "{repr(self)}".')
-        if not literal:
-            result = subprocess.run([str(output)], **subprocess_kwds)
-        if self.supported == 'pass':
-            return result.returncode == 0
-        return result.returncode != 0
-
 
 def main(argv: list[str] | None = None):
+    '''Run our main entry point.'''
+
     parser = argparse.ArgumentParser(
         prog='format validator',
         description='Number format validator for various programming languages.',
@@ -133,13 +269,16 @@ def main(argv: list[str] | None = None):
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {__version__}')
     args = parser.parse_args(argv)
 
+    # ensure we print everything to stdout if we're piping the process
     if args.verbose:
         subprocess_kwds['stdout'] = subprocess.STDOUT
         subprocess_kwds['stderr'] = subprocess.STDOUT
 
+    # cleanup a previous run, if it exists
     shutil.rmtree(temp, ignore_errors=True)
     temp.mkdir(exist_ok=True)
 
+    # load all our test files
     files: list[Path] = []
     if args.file is not None:
         files += [Path(file) for file in args.file]
@@ -147,40 +286,33 @@ def main(argv: list[str] | None = None):
         for directory in args.directory:
             files += [file for file in Path(directory).rglob('*.toml')]
 
-    cases: list['TestFile'] = []
-    for file in files:
-        with file.open(encoding='utf-8') as f:
-            cases.append(TestFile.load(tomllib.loads(f.read())))
-    print('# \x1b[1;32mResults\x1b[0m')
-    if args.output is not None:
-        with open(args.output, mode='a+', encoding='utf-8') as file:
-            print('# Results', file=file)
+    # load all our test cases from these files
+    cases: list['File'] = [File.load(i) for i in files]
+
+    # run our test cases and print our results
+    logger = Logger(args.output)
+    logger.log('# \x1b[1;32mResults\x1b[0m')
     for case in cases:
-        case.run(args.output)
+        logger.log('\n' + case.run())
 
 
-rust_literal = '''
+languages = {
+    'rust': Language(
+        name='rust',
+        literal='''
 pub fn main() {{
     let _: {type} = {value};
 }}
-'''
-
-rust_string = '''
+''',
+        string='''
 pub fn main() {{
     let _ = "{value}".parse::<{type}>().unwrap();
 }}
-'''
-
-templates = {
-    ('rust', True): rust_literal,
-    ('rust', False): rust_string,
-}
-extensions = {
-    'rust': '.rs',
-}
-types = {
-    ('rust', 'float'): 'f64',
-    ('rust', 'integer'): 'i64',
+''',
+        extension='.rs',
+        floating='f64',
+        integer='i64',
+    )
 }
 
 

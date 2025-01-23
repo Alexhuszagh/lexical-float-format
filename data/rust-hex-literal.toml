@@ -1,5 +1,5 @@
-[format]
-title = "Rust - Hex Literal"
+[metadata]
+title = "Rust - Hex Literal - {}"
 literal = true
 language = 'rust'
 description = 'Rust literal hexadecimal numbers. Requires base prefixes. Does not suppport floats.'
@@ -17,13 +17,13 @@ flags = ""
 value = "0x001"
 title = "No integer leading zeros."
 flags = "N/I"
-supported = "fail"
+expected = "fail"
 
 [[integers]]
 value = "0X1"
 title = "Case-sensitive base prefix."
 flags = "e/P"
-supported = "fail"
+expected = "fail"
 
 [[integers]]
 value = "0x1X"
@@ -34,25 +34,25 @@ flags = "e/S"
 value = "0x"
 title = "Required mantissa digits."
 flags = "M/R"
-supported = "fail"
+expected = "fail"
 
 [[integers]]
 value = "0x"
 title = "Required integer digits."
 flags = "I/R"
-supported = "fail"
+expected = "fail"
 
 [[integers]]
 value = "+0x1"
 title = "No mantissa positive sign."
 flags = "+/M"
-supported = "fail"
+expected = "fail"
 
 [[integers]]
 value = "0x1"
 title = "Required positive sign."
 flags = "R/M"
-supported = "fail"
+expected = "fail"
 
 [[integers]]
 value = "0x1_1"

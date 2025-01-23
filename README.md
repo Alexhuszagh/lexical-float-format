@@ -67,9 +67,10 @@ We use a TOML data format for each language, which dictates the runner and type 
 - integers
 
 ```toml
-[format]
+[metadata]
 # the title to print when running the test
-title = "Rust - Decimal Literal"
+# the {} is a placeholder for the version
+title = "Rust - Decimal Literal - {}"
 # can be a literal or a string
 literal = true
 # the programming language to use
@@ -84,7 +85,7 @@ title = "Simple"
 flags = ""
 # if the format is supported if the test passes or fails
 # the valid values are "pass" and "fail". defaults to "pass"
-supported = "pass"
+expected = "pass"
 
 [[floats]]
 # the value to test (required)
@@ -93,7 +94,7 @@ value = ".1"
 title = "Required integer digits."
 # short-hand flags when writing a table (optional)
 flags = "I/R"
-supported = "pass"
+expected = "pass"
 
 [[integers]]
 # the value to test (required)
@@ -102,7 +103,7 @@ value = ".1"
 title = "Required integer digits."
 # short-hand flags when writing a table (optional)
 flags = "I/R"
-supported = "pass"
+expected = "pass"
 ```
 
 `value` can be either a value or an array of values, in which case of an array, will check that all have the same result or an error will occur, notifying that more complex logic is required.

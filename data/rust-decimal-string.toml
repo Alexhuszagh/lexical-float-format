@@ -1,5 +1,5 @@
-[format]
-title = "Rust - Decimal String"
+[metadata]
+title = "Rust - Decimal String - {}"
 literal = false
 language = 'rust'
 description = 'Parsing numbers via `FromStr`. Does not support base prefixes.'
@@ -15,103 +15,103 @@ flags = ""
 value = ".1"
 title = "Required integer digits."
 flags = "I/R"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "1."
 title = "Required fraction digits."
 flags = "F/R"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = ["1.0e", "1e", "1.e"]
 title = "Required exponent digits."
 flags = "E/R"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "."
 title = "Required mantissa digits."
 flags = "M/R"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "+1.0"
 title = "No mantissa positive sign."
 flags = "+/M"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "1.0"
 title = "Required positive sign."
 flags = "R/M"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "1.0e3"
 title = "No exponent notation."
 flags = "e/e"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "1.0e+3"
 title = "No exponent positive sign."
 flags = "+/E"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "1.0e3"
 title = "Required exponent sign."
 flags = "R/E"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "1e3"
 title = "No exponent without fraction."
 flags = "e/F"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = ["NaN", "nan", "inf", "Infinity"]
 title = "No special (non-finite) values."
 flags = "S/S"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = ["INF"]
 title = "Case-sensitive special (non-finite) values."
 flags = "S/C"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "001.0"
 title = "No float leading zeros."
 flags = "N/F"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "1.0"
 title = "Required exponent notation."
 flags = "R/e"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "1.0E3"
 title = "Case-sensitive exponent character."
 flags = "e/C"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = ".1E3"
 title = "Require integer digits with exponent."
 flags = "I/E"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "1.E3"
 title = "Require fraction digits with exponent."
 flags = "F/E"
-supported = "fail"
+expected = "fail"
 
 [[floats]]
 value = "0d1"
@@ -127,7 +127,7 @@ flags = "r/S"
 value = ".e3"
 title = "Require mantissa digits with exponent."
 flags = "M/E"
-supported = "fail"
+expected = "fail"
 
 # Digit Separator Flags
 
@@ -267,7 +267,7 @@ flags = "S/C"
 value = "001"
 title = "No integer leading zeros."
 flags = "N/I"
-supported = "fail"
+expected = "fail"
 
 [[integers]]
 value = "0D1"
