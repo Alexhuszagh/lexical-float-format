@@ -3,6 +3,7 @@ title = "Rust - Binary Literal - {}"
 literal = true
 language = 'rust'
 description = 'Rust literal binary numbers. Requires base prefixes. Does not suppport floats.'
+base = 2
 
 # Non-Digit Separator Flags
 

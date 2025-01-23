@@ -75,6 +75,8 @@ title = "Rust - Decimal Literal - {}"
 literal = true
 # the programming language to use
 language = 'rust'
+# An optional radix for the number (defaults to 10)
+base = 10
 
 [[floats]]
 # the value to test (required)

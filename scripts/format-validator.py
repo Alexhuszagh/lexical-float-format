@@ -72,6 +72,8 @@ class Language:
         match self.name:
             case 'rust':
                 return self._rust_build(code, literal)
+            case 'python':
+                return self._python_interpret(code, literal)
             case _:
                 raise ValueError(f'Got an unsupported language of "{self.name}".')
 
@@ -81,6 +83,8 @@ class Language:
         match self.name:
             case 'rust':
                 return self._rustc_version
+            case 'python':
+                return self._python_version
             case _:
                 raise ValueError(f'Got an unsupported language of "{self.name}".')
 
@@ -95,13 +99,15 @@ class Language:
             file.write(code)
         return path
 
+    # RUST
+
     @property
-    def _rustc(self) -> str:
-        return os.environ.get('RUSTC', 'rustc')
+    def _rustc(self) -> list[str]:
+        return os.environ.get('RUSTC', 'rustc').strip().split()
 
     @property
     def _rustc_version(self) -> str:
-        output = subprocess.getoutput([self._rustc, '--version'])
+        output = subprocess.getoutput([*self._rustc, '--version'])
         return re.match(r'^rustc (\d+\.\d+(?:\.\d+)?) .*$', output).group(1)
 
     def _rust_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
@@ -109,13 +115,29 @@ class Language:
 
         path = self.write_code(code)
         output = path.parent / path.stem
-        result = subprocess.run([self._rustc, str(path), '-o', str(output)], **subprocess_kwds)
+        result = subprocess.run([*self._rustc, str(path), '-o', str(output)], **subprocess_kwds)
         if not literal and result.returncode != 0:
             raise RuntimeError(f'Got an unexpected result running code "{code}" for language "{repr(self)}".')
         if not literal:
             result = subprocess.run([str(output)], **subprocess_kwds)
 
         return result
+
+    # PYTHON
+
+    @property
+    def _python(self) -> list[str]:
+        return os.environ.get('PYTHON', 'python').strip().split()
+
+    @property
+    def _python_version(self) -> str:
+        output = subprocess.getoutput([*self._python, '--version'])
+        return re.match(r'^Python (\d+\.\d+(?:\.\d+)?).*$', output).group(1)
+
+    def _python_interpret(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+        '''Interpret our Python code for testing.'''
+        _ = literal
+        return subprocess.run([*self._python, '-c', code], **subprocess_kwds)
 
 
 @dataclass
@@ -183,9 +205,19 @@ class File:
 
         # run all our test cases
         for case in self.floats:
-            result.append(case.run(language, self.metadata.literal, language.floating))
+            result.append(case.run(
+                language=language,
+                literal=self.metadata.literal,
+                data_type=language.floating,
+                base=self.metadata.base,
+            ))
         for case in self.integers:
-            result.append(case.run(language, self.metadata.literal, language.integer))
+            result.append(case.run(
+                language=language,
+                literal=self.metadata.literal,
+                data_type=language.integer,
+                base=self.metadata.base,
+            ))
 
         return '\n'.join(result)
 
@@ -202,6 +234,7 @@ class Metadata:
     literal: bool
     language: str
     description: str | None = None
+    base: int = 10
 
     def get_language(self) -> Language:
         '''Get the language specification from the name.'''
@@ -228,30 +261,81 @@ class Case:
         '''Convert the success or failure to a checkmark.'''
         return '✅' if success else '❌'
 
-    def run(self, language: Language, literal: bool, data_type: str) -> str:
+    def run(
+        self,
+        language: Language,
+        literal: bool,
+        data_type: str,
+        base: int = 10,
+    ) -> str:
         '''Run a single test case for a given language.'''
-        check = self.checkmark(self.test(language, literal, data_type))
+
+        success = self.test(
+            language=language,
+            literal=literal,
+            data_type=data_type,
+            base=base,
+        )
+        check = self.checkmark(success)
         value = self.value if isinstance(self.value, str) else self.value[0]
+
         return f'| {self.flags} | {check} | {value} | {self.title} |'
 
-    def test(self, language: Language, literal: bool, data_type: str) -> bool:
+    def test(
+        self,
+        language: Language,
+        literal: bool,
+        data_type: str,
+        base: int = 10,
+    ) -> bool:
         '''Test one or more values and return if the test passed.'''
-        if isinstance(self.value, str):
-            return self.test_one(language, self.value, literal, data_type)
-        return self.test_many(language, self.value, literal, data_type)
+        fn = self.test_one if isinstance(self.value, str) else self.test_many
+        return fn(
+            language=language,
+            value=self.value,
+            literal=literal,
+            data_type=data_type,
+            base=base,
+        )
 
-    def test_one(self, language: Language, value: str, literal: bool, data_type: str) -> bool:
+    def test_one(
+        self,
+        language: Language,
+        value: str,
+        literal: bool,
+        data_type: str,
+        base: int = 10,
+    ) -> bool:
         '''Run a test case for a single value.'''
+
         template = language.template(literal)
-        code = template.format(type=data_type, value=value)
+        code = template.format(type=data_type, value=value, base=base)
         process = language.build(code, literal)
         return self.succeeded(process)
 
-    def test_many(self, language: Language, values: list[str], literal: bool, data_type: str) -> bool:
+    def test_many(
+        self,
+        language: Language,
+        value: list[str],
+        literal: bool,
+        data_type: str,
+        base: int = 10,
+    ) -> bool:
         '''Run a test case for multiple values.'''
-        results = [self.test_one(language, i, literal, data_type) for i in values]
+
+        results = [
+            self.test_one(
+                language=language,
+                value=i,
+                literal=literal,
+                data_type=data_type,
+                base=base,
+            )
+            for i in value
+        ]
         if not all(i == results[0] for i in results[1:]):
             raise ValueError(f'Got inconsistent results for "{repr(self)}".')
+
         return results[0]
 
 
@@ -312,6 +396,19 @@ pub fn main() {{
         extension='.rs',
         floating='f64',
         integer='i64',
+    ),
+    'python': Language(
+        name='python',
+        literal='{value}',
+        string='''
+def as_int(x):
+    return int(x, {base})
+
+{type}("{value}")
+''',
+        extension='.py',
+        floating='float',
+        integer='as_int',
     )
 }
 

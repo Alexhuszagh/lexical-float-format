@@ -3,6 +3,7 @@ title = "Rust - Octal Literal - {}"
 literal = true
 language = 'rust'
 description = 'Rust literal octal numbers. Requires base prefixes. Does not suppport floats.'
+base = 8
 
 # Non-Digit Separator Flags
 
