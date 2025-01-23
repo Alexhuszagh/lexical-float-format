@@ -10,124 +10,155 @@ description = 'Parsing numbers via `FromStr`. Does not support base prefixes.'
 value = "0.1"
 title = "Simple"
 flags = ""
+outcome = "pass"
+expected = "0.1"
+
+[[integers]]
+value = "12"
+title = "Simple"
+flags = ""
+outcome = "pass"
+expected = "12"
 
 [[floats]]
 value = ".1"
 title = "Required integer digits."
 flags = "I/R"
 outcome = "fail"
+expected = "0.1"
 
 [[floats]]
-value = "1."
+value = "12."
 title = "Required fraction digits."
 flags = "F/R"
 outcome = "fail"
+expected = "12.0"
 
 [[floats]]
 value = ["1.0e", "1e", "1.e"]
 title = "Required exponent digits."
 flags = "E/R"
 outcome = "fail"
+expected = ["1.0", "1.0", "1.0"]
 
 [[floats]]
 value = "."
 title = "Required mantissa digits."
 flags = "M/R"
 outcome = "fail"
+expected = "0.0"
 
 [[floats]]
-value = "+1.0"
+value = "+12.0"
 title = "No mantissa positive sign."
 flags = "+/M"
 outcome = "fail"
+expected = "12.0"
 
 [[floats]]
-value = "1.0"
+value = "12.0"
 title = "Required positive sign."
 flags = "R/M"
 outcome = "fail"
+expected = "12.0"
 
 [[floats]]
 value = "1.0e3"
 title = "No exponent notation."
 flags = "e/e"
 outcome = "fail"
+expected = "1e3"
 
 [[floats]]
 value = "1.0e+3"
 title = "No exponent positive sign."
 flags = "+/E"
 outcome = "fail"
+expected = "1e3"
 
 [[floats]]
 value = "1.0e3"
 title = "Required exponent sign."
 flags = "R/E"
 outcome = "fail"
+expected = "1e3"
 
 [[floats]]
 value = "1e3"
 title = "No exponent without fraction."
 flags = "e/F"
 outcome = "fail"
+expected = "1e3"
 
 [[floats]]
 value = ["NaN", "nan", "inf", "Infinity"]
 title = "No special (non-finite) values."
 flags = "S/S"
 outcome = "fail"
+expected = ["f64::NAN", "f64::NAN", "f64::INFINITY", "f64::INFINITY"]
 
 [[floats]]
 value = ["INF"]
 title = "Case-sensitive special (non-finite) values."
 flags = "S/C"
 outcome = "fail"
+expected = ["f64::INFINITY"]
 
 [[floats]]
-value = "001.0"
+value = "001.2"
 title = "No float leading zeros."
 flags = "N/F"
 outcome = "fail"
+expected = "1.2"
 
 [[floats]]
-value = "1.0"
+value = "1.2"
 title = "Required exponent notation."
 flags = "R/e"
 outcome = "fail"
+expected = "1.2"
 
 [[floats]]
 value = "1.0E3"
 title = "Case-sensitive exponent character."
 flags = "e/C"
 outcome = "fail"
+expected = "1.0e3"
 
 [[floats]]
 value = ".1E3"
 title = "Require integer digits with exponent."
 flags = "I/E"
 outcome = "fail"
+expected = "1.0e2"
 
 [[floats]]
 value = "1.E3"
 title = "Require fraction digits with exponent."
 flags = "F/E"
 outcome = "fail"
+expected = "1.0e3"
 
 [[floats]]
-value = "0d1"
+value = "0d1.2"
 title = "Require base prefixes."
 flags = "r/P"
+outcome = "pass"
+expected = "1.2"
 
 [[floats]]
-value = "1d"
+value = "1.2d"
 title = "Require base suffixes."
 flags = "r/S"
+outcome = "pass"
+expected = "1.2"
 
 [[floats]]
 value = ".e3"
 title = "Require mantissa digits with exponent."
 flags = "M/E"
 outcome = "fail"
+expected = "0.0"
 
 # Digit Separator Flags
 
@@ -135,146 +166,203 @@ outcome = "fail"
 value = "1_1.11e11"
 title = "Integer internal digit separator."
 flags = "I/I"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "11.1_1e11"
 title = "Fraction internal digit separator."
 flags = "F/I"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "11.11e1_1"
 title = "Exponent internal digit separator."
 flags = "E/I"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "-_11.11e11"
 title = "Integer leading digit separator."
 flags = "I/L"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "11._11e11"
 title = "Fraction leading digit separator."
 flags = "F/L"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "11.11e_11"
 title = "Exponent leading digit separator."
 flags = "E/L"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "11_.11e11"
 title = "Integer trailing digit separator."
 flags = "I/T"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "11.11_e11"
 title = "Fraction trailing digit separator."
 flags = "F/T"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "11.11e11_"
 title = "Exponent trailing digit separator."
 flags = "E/T"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "1__1.11e11"
 title = "Integer consecutive digit separator."
 flags = "I/C"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "11.1__1e11"
 title = "Fraction consecutive digit separator."
 flags = "F/C"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "11.11e1__1"
 title = "Exponent consecutive digit separator."
 flags = "E/C"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = ["N_a_N", "in_f"]
 title = "Special (non-finite) digit separator."
 flags = "S/D"
+outcome = "pass"
+expected = ["f64::NAN", "f64::INFINITY"]
 
 [[floats]]
 value = "_11.11e11"
 title = "Absolute start digit separator."
 flags = "s/D"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "_-11.11e11"
 title = "Integer sign digit separator."
 flags = "I/s"
+outcome = "pass"
+expected = "-11.11e11"
 
 [[floats]]
 value = "__-11.11e11"
 title = "Integer sign consecutive digit separator."
 flags = "I/c"
+outcome = "pass"
+expected = "-11.11e11"
 
 [[floats]]
 value = "11.11e_-11"
 title = "Exponent sign digit separator."
 flags = "E/s"
+outcome = "pass"
+expected = "11.11e-11"
 
 [[floats]]
 value = "11.11e__-11"
 title = "Exponent sign consecutive digit separator."
 flags = "E/c"
+outcome = "pass"
+expected = "11.11e-11"
 
 [[floats]]
 value = "0_d11.11e11"
 title = "Base prefix internal digit separator."
 flags = "P/I"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "-_0d11.11e11"
 title = "Base prefix leading digit separator."
 flags = "P/L"
+outcome = "pass"
+expected = "-11.11e11"
 
 [[floats]]
 value = "0d_11.11e11"
 title = "Base prefix trailing digit separator."
 flags = "P/T"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "0d__11.11e11"
 title = "Base prefix consecutive digit separator."
 flags = "P/C"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "011.11e11d"
 title = "Base suffix internal digit separator."
 flags = "S/I"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "011.11e11_d"
 title = "Base suffix leading digit separator."
 flags = "S/L"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "011.11e11d_"
 title = "Base suffix trailing digit separator."
 flags = "S/T"
+outcome = "pass"
+expected = "11.11e11"
 
 [[floats]]
 value = "011.11e11d__"
 title = "Base suffix consecutive digit separator."
 flags = "S/C"
+outcome = "pass"
+expected = "11.11e11"
 
 # Integers
 
 [[integers]]
-value = "001"
+value = "0012"
 title = "No integer leading zeros."
 flags = "N/I"
 outcome = "fail"
+expected = "12"
 
 [[integers]]
-value = "0D1"
+value = "0D12"
 title = "Case-sensitive base prefix."
 flags = "e/P"
+outcome = "pass"
+expected = "12"
 
 [[integers]]
-value = "1D"
+value = "12D"
 title = "Case-sensitive base suffix."
 flags = "e/S"
+outcome = "pass"
+expected = "12"

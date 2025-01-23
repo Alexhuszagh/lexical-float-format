@@ -201,7 +201,22 @@ class Language:
         def to_cmd(input: Path, output: Path) -> str:
             return [*self._rustc, str(input), '-o', str(output)]
 
-        return self._build_and_test(code, literal, to_cmd)
+        processed = self._build_and_test(code, literal, to_cmd)
+        is_success = processed.returncode == 0
+
+        # validate error handling
+        if literal and not is_success:
+            errors = ('error:',)
+        elif not literal and not is_success:
+            errors = ('`Err`',)
+        else:
+            errors = ()
+        if not is_success and 'assertion `left == right` failed' in processed.stdout:
+            raise AssertionError(f'Values did not equal for code "{code}".')
+        if errors and not any(i in processed.stdout for i in errors):
+            raise ValueError(f'Got an unexpected response with error "{processed.stdout}".')
+
+        return processed
 
     # PYTHON
 
@@ -264,6 +279,8 @@ class Language:
                 cmd.append(f'-std={self.langversion}')
             return cmd
 
+        # TODO: Need to validate error handling
+
         return self._build_and_test(code, literal, to_cmd)
 
     # C++
@@ -292,6 +309,8 @@ class Language:
             if self.langversion:
                 cmd.append(f'-std={self.langversion}')
             return cmd
+
+        # TODO: Need to validate error handling
 
         return self._build_and_test(code, literal, to_cmd)
 
@@ -412,6 +431,10 @@ class Case:
     expected: str | list[str]
     outcome: str
     flags: str
+
+    def __post_init__(self):
+        if self.outcome not in ('pass', 'fail'):
+            raise ValueError('Outcome must be either "pass" or "fail".')
 
     def succeeded(self, process: subprocess.CompletedProcess) -> bool:
         '''Determine if the process completed successfully.'''

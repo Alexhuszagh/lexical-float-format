@@ -1,3 +1,18 @@
+trait IsNan {{
+    fn is_nan(&self) -> bool {{
+        false
+    }}
+}}
+
+impl IsNan for i64 {{
+}}
+
 pub fn main() {{
-    let _ = "{value}".parse::<{type}>().unwrap();
+    let x = "{value}".parse::<{type}>().unwrap();
+    let expected: {type} = {expected};
+    if expected.is_nan() {{
+        assert_eq!(x.is_nan(), expected.is_nan());
+    }} else {{
+        assert_eq!(x, expected);
+    }}
 }}
