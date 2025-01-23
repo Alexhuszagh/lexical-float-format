@@ -1,8 +1,8 @@
 [metadata]
-title = "Rust - Hex Literal - {}"
+title = "Python - Hex Literal - {}"
 literal = true
-language = 'rust'
-description = 'Rust literal hexadecimal numbers. Requires base prefixes. Does not suppport floats.'
+language = 'python'
+description = 'Python literal hexadecimal numbers. Requires base prefixes. Does not suppport floats.'
 base = 16
 
 # Non-Digit Separator Flags

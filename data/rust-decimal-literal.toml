@@ -15,103 +15,103 @@ flags = ""
 value = ".1"
 title = "Required integer digits."
 flags = "I/R"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "1."
 title = "Required fraction digits."
 flags = "F/R"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = ["1.0e", "1e", "1.e"]
 title = "Required exponent digits."
 flags = "E/R"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "."
 title = "Required mantissa digits."
 flags = "M/R"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "+1.0"
 title = "No mantissa positive sign."
 flags = "+/M"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "1.0"
 title = "Required positive sign."
 flags = "R/M"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "1.0e3"
 title = "No exponent notation."
 flags = "e/e"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "1.0e+3"
 title = "No exponent positive sign."
 flags = "+/E"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "1.0e3"
 title = "Required exponent sign."
 flags = "R/E"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "1e3"
 title = "No exponent without fraction."
 flags = "e/F"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = ["NaN", "nan", "inf", "Infinity"]
 title = "No special (non-finite) values."
 flags = "S/S"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = ["INF"]
 title = "Case-sensitive special (non-finite) values."
 flags = "S/C"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "001.0"
 title = "No float leading zeros."
 flags = "N/F"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "1.0"
 title = "Required exponent notation."
 flags = "R/e"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "1.0E3"
 title = "Case-sensitive exponent character."
 flags = "e/C"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = ".1E3"
 title = "Require integer digits with exponent."
 flags = "I/E"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "1.E3"
 title = "Require fraction digits with exponent."
 flags = "F/E"
-expected = "fail"
+outcome = "fail"
 
 [[floats]]
 value = "0d1"
@@ -127,7 +127,7 @@ flags = "r/S"
 value = ".e3"
 title = "Require mantissa digits with exponent."
 flags = "M/E"
-expected = "fail"
+outcome = "fail"
 
 # Digit Separator Flags
 
@@ -267,7 +267,7 @@ flags = "S/C"
 value = "001"
 title = "No integer leading zeros."
 flags = "N/I"
-expected = "fail"
+outcome = "fail"
 
 [[integers]]
 value = "0D1"

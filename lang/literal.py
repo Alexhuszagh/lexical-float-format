@@ -1,1 +1,1 @@
-{value}
+assert {value} == {expected}

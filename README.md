@@ -88,7 +88,7 @@ title = "Simple"
 flags = ""
 # if the format is supported if the test passes or fails
 # the valid values are "pass" and "fail". defaults to "pass"
-expected = "pass"
+outcome = "pass"
 
 [[floats]]
 # the value to test (required)
@@ -97,7 +97,7 @@ value = ".1"
 title = "Required integer digits."
 # short-hand flags when writing a table (optional)
 flags = "I/R"
-expected = "pass"
+outcome = "pass"
 
 [[integers]]
 # the value to test (required)
@@ -106,7 +106,7 @@ value = ".1"
 title = "Required integer digits."
 # short-hand flags when writing a table (optional)
 flags = "I/R"
-expected = "pass"
+outcome = "pass"
 ```
 
 `value` can be either a value or an array of values, in which case of an array, will check that all have the same result or an error will occur, notifying that more complex logic is required.

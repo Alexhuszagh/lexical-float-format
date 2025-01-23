@@ -10,3 +10,5 @@ description = 'C++ string decimal numbers. Does not support base prefixes.'
 value = "0.1"
 title = "Simple"
 flags = ""
+outcome = "pass"
+expected = "0.1"

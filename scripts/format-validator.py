@@ -160,7 +160,7 @@ class Language:
     def _run(cmd: list[str]) -> subprocess.CompletedProcess:
         if verbose:
             print('Running: ' + ' '.join(cmd))
-        result = subprocess.run(cmd, capture_output=True, encoding='utf-8')
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='utf-8')
         if verbose:
             print('Received: ' + result.stdout)
         return result
@@ -220,9 +220,23 @@ class Language:
 
     def _python_interpret(self, code: str, literal: bool) -> subprocess.CompletedProcess:
         '''Interpret our Python code for testing.'''
-        _ = literal
-        return self._run([*self._python, '-c', code])
 
+        processed = self._run([*self._python, '-c', code])
+        is_success = processed.returncode == 0
+
+        # validate error handling
+        if literal and not is_success:
+            errors = ('SyntaxError:', 'NameError:')
+        elif not literal and not is_success:
+            errors = ('ValueError:',)
+        else:
+            errors = ()
+        if not is_success and 'AssertionError:' in processed.stdout:
+            raise AssertionError(f'Values did not equal for code "{code}".')
+        if errors and not any(i in processed.stdout for i in errors):
+            raise ValueError(f'Got an unexpected response with error "{processed.stdout}".')
+
+        return processed
     # C
 
     @property
@@ -236,7 +250,7 @@ class Language:
     @property
     def _cc_version(self) -> str:
         cc = self._cc
-        if cc[0] == 'cl':
+        if cc[0] in ('cl', 'cl.exe'):
             raise ValueError('MSVC is currently unsupported.')
         output = self._getoutput([*cc, '--version'])
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
@@ -265,7 +279,7 @@ class Language:
     @property
     def _cpp_version(self) -> str:
         cpp = self._cpp
-        if cpp[0] == 'cl':
+        if cpp[0] in ('cl', 'cl.exe'):
             raise ValueError('MSVC is currently unsupported.')
         output = self._getoutput([*cpp, '--version'])
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
@@ -395,12 +409,13 @@ class Case:
 
     value: str | list[str]
     title: str
-    flags: str = ''
-    expected: str = 'pass'
+    expected: str | list[str]
+    outcome: str
+    flags: str
 
     def succeeded(self, process: subprocess.CompletedProcess) -> bool:
         '''Determine if the process completed successfully.'''
-        if self.expected == 'pass':
+        if self.outcome == 'pass':
             return process.returncode == 0
         return process.returncode != 0
 
@@ -441,6 +456,7 @@ class Case:
         return fn(
             language=language,
             value=self.value,
+            expected=self.expected,
             literal=literal,
             data_type=data_type,
             base=base,
@@ -450,6 +466,7 @@ class Case:
         self,
         language: Language,
         value: str,
+        expected: str,
         literal: bool,
         data_type: str,
         base: int = 10,
@@ -457,7 +474,12 @@ class Case:
         '''Run a test case for a single value.'''
 
         template = language.template(literal)
-        code = template.format(type=data_type, value=value, base=base)
+        code = template.format(
+            type=data_type,
+            value=value,
+            base=base,
+            expected=expected,
+        )
         process = language.build(code, literal)
         return self.succeeded(process)
 
@@ -465,6 +487,7 @@ class Case:
         self,
         language: Language,
         value: list[str],
+        expected: list[str],
         literal: bool,
         data_type: str,
         base: int = 10,
@@ -474,12 +497,13 @@ class Case:
         results = [
             self.test_one(
                 language=language,
-                value=i,
+                value=value[i],
+                expected=expected[i],
                 literal=literal,
                 data_type=data_type,
                 base=base,
             )
-            for i in value
+            for i in range(len(value))
         ]
         if not all(i == results[0] for i in results[1:]):
             raise ValueError(f'Got inconsistent results for "{repr(self)}".')

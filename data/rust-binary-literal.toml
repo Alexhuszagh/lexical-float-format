@@ -18,13 +18,13 @@ flags = ""
 value = "0b001"
 title = "No integer leading zeros."
 flags = "N/I"
-expected = "fail"
+outcome = "fail"
 
 [[integers]]
 value = "0B1"
 title = "Case-sensitive base prefix."
 flags = "e/P"
-expected = "fail"
+outcome = "fail"
 
 [[integers]]
 value = "0b1B"
@@ -35,25 +35,25 @@ flags = "e/S"
 value = "0b"
 title = "Required mantissa digits."
 flags = "M/R"
-expected = "fail"
+outcome = "fail"
 
 [[integers]]
 value = "0b"
 title = "Required integer digits."
 flags = "I/R"
-expected = "fail"
+outcome = "fail"
 
 [[integers]]
 value = "+0b1"
 title = "No mantissa positive sign."
 flags = "+/M"
-expected = "fail"
+outcome = "fail"
 
 [[integers]]
 value = "0b1"
 title = "Required positive sign."
 flags = "R/M"
-expected = "fail"
+outcome = "fail"
 
 [[integers]]
 value = "0b1_1"
