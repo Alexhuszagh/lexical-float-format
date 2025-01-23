@@ -60,7 +60,7 @@ value = "1.0"
 title = "Required positive sign."
 flags = "R/M"
 outcome = "fail"
-expected = "1e3"
+expected = "1.0"
 
 [[floats]]
 value = "1.0e3"
@@ -109,7 +109,7 @@ value = "001.2"
 title = "No float leading zeros."
 flags = "N/F"
 outcome = "fail"
-expected = "1e2"
+expected = "1.2"
 
 [[floats]]
 value = "1.2"

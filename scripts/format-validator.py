@@ -176,11 +176,19 @@ class Language:
         path = self.write_code(code)
         output = path.parent / path.stem
         result = self._run(cmd(path, output))
-        if not literal and result.returncode != 0:
-            msg = f'Got an unexpected result compiling code "{code}" for language "{repr(self)}".'
+
+        # compile-time failure is a test itself for literals
+        if result.returncode != 0:
+            if not literal:
+                msg = f'Got an unexpected result compiling code "{code}" for language "{repr(self)}".'
+                raise RuntimeError(msg)
+            return result
+
+        # if we have a mismatched value for our literals, then we have an issue
+        result = self._run([str(output)])
+        if result.returncode != 0 and literal:
+            msg = f'Got an unexpected result running code "{code}" for language "{repr(self)}".'
             raise RuntimeError(msg)
-        if not literal:
-            result = self._run([str(output)])
 
         return result
 
