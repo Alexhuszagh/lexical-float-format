@@ -46,23 +46,22 @@ class TestFile:
         return cls(format=format, floats=floats, integers=integers)
 
     def run(self, output: str | None = None) -> str:
-        result = [
-            f'# \x1b[1;36m{self.format.title}\x1b[0m',
-            '',
-            '| Flag | Pass | Value | Title |',
-            '|:-:|:-:|:-:|:-:|',
-        ]
+        result = [f'## \x1b[1;36m{self.format.title}\x1b[0m', '']
+        if self.format.description is not None:
+            result += [self.format.description, '']
+        result += ['| Flag | Pass | Value | Title |', '|:-:|:-:|:-:|:-:|']
         language = self.format.language
         literal = self.format.literal
         for case in self.floats:
             result.append(case.test(language, literal, types[(language, 'float')]))
         for case in self.integers:
             result.append(case.test(language, literal, types[(language, 'integer')]))
-        print('\n'.join(result))
+
+        print('\n' + '\n'.join(result))
         if output is not None:
-            result[0] = f'# {self.format.title}'
+            result[0] = f'## {self.format.title}'
             with open(output, mode='a+', encoding='utf-8') as file:
-                print('\n'.join(result) + '\n\n', file=file)
+                print('\n' + '\n'.join(result), file=file)
 
 
 @dataclass
@@ -70,6 +69,7 @@ class TestFormat:
     title: str
     literal: bool
     language: str
+    description: str | None = None
 
 
 @dataclass
@@ -151,6 +151,10 @@ def main(argv: list[str] | None = None):
     for file in files:
         with file.open(encoding='utf-8') as f:
             cases.append(TestFile.load(tomllib.loads(f.read())))
+    print('# \x1b[1;32mResults\x1b[0m')
+    if args.output is not None:
+        with open(args.output, mode='a+', encoding='utf-8') as file:
+            print('# Results', file=file)
     for case in cases:
         case.run(args.output)
 

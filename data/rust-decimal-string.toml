@@ -1,8 +1,8 @@
 [format]
-title = "Rust - Decimal Literal"
-literal = true
+title = "Rust - Decimal String"
+literal = false
 language = 'rust'
-description = 'Rust literal decimal numbers. Does not support base prefixes.'
+description = 'Parsing numbers via `FromStr`. Does not support base prefixes.'
 
 # Non-Digit Separator Flags
 

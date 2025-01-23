@@ -1,0 +1,90 @@
+[format]
+title = "Rust - Binary Literal"
+literal = true
+language = 'rust'
+description = 'Rust literal binary numbers. Requires base prefixes. Does not suppport floats.'
+
+# Non-Digit Separator Flags
+
+[[floats]]
+value = "0b0.1"
+title = "Simple"
+flags = ""
+
+# Integers
+
+[[integers]]
+value = "0b001"
+title = "No integer leading zeros."
+flags = "N/I"
+supported = "fail"
+
+[[integers]]
+value = "0B1"
+title = "Case-sensitive base prefix."
+flags = "e/P"
+supported = "fail"
+
+[[integers]]
+value = "0b1B"
+title = "Case-sensitive base suffix."
+flags = "e/S"
+
+[[integers]]
+value = "0b"
+title = "Required mantissa digits."
+flags = "M/R"
+supported = "fail"
+
+[[integers]]
+value = "0b"
+title = "Required integer digits."
+flags = "I/R"
+supported = "fail"
+
+[[integers]]
+value = "+0b1"
+title = "No mantissa positive sign."
+flags = "+/M"
+supported = "fail"
+
+[[integers]]
+value = "0b1"
+title = "Required positive sign."
+flags = "R/M"
+supported = "fail"
+
+[[integers]]
+value = "0b1_1"
+title = "Integer internal digit separator."
+flags = "I/I"
+
+[[integers]]
+value = "0b_11"
+title = "Integer leading digit separator."
+flags = "I/L"
+
+[[integers]]
+value = "0b11_"
+title = "Integer trailing digit separator."
+flags = "I/T"
+
+[[integers]]
+value = "0b1__1"
+title = "Integer consecutive digit separator."
+flags = "I/C"
+
+[[integers]]
+value = "_0b11"
+title = "Absolute start digit separator."
+flags = "s/D"
+
+[[integers]]
+value = "_-0b11"
+title = "Integer sign digit separator."
+flags = "I/s"
+
+[[integers]]
+value = "__-0b11"
+title = "Integer sign consecutive digit separator."
+flags = "I/c"
