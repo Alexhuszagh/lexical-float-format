@@ -78,33 +78,18 @@ class Language:
     def build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
         '''Build the code snippet, optionally running it, and returning the result.'''
 
-        # build and process our results
-        match self.name:
-            case 'rust':
-                return self._rust_build(code, literal)
-            case 'python':
-                return self._python_interpret(code, literal)
-            case 'c':
-                return self._cc_build(code, literal)
-            case 'cpp':
-                return self._cpp_build(code, literal)
-            case _:
-                raise ValueError(f'Got an unsupported language of "{self.name}".')
+        build = getattr(self, f'_{self.name}_build', None)
+        if build is None:
+            raise ValueError(f'Got an unsupported language of "{self.name}".')
+        return build(code, literal)
 
     def get_version(self) -> str:
         '''Get the current version of the used interpreter.'''
 
-        match self.name:
-            case 'rust':
-                return self._rustc_version
-            case 'python':
-                return self._python_version
-            case 'c':
-                return self._cc_version
-            case 'cpp':
-                return self._cpp_version
-            case _:
-                raise ValueError(f'Got an unsupported language of "{self.name}".')
+        version = getattr(self, f'_{self.name}_version', None)
+        if version is None:
+            raise ValueError(f'Got an unsupported language of "{self.name}".')
+        return version
 
     def create_path(self, directory: Path = temp) -> Path:
         '''Create a new, unique path for testing.'''
@@ -200,7 +185,7 @@ class Language:
         return self._get_or_fallbacks(default=['rustc'], envvars=['RUSTC'])
 
     @property
-    def _rustc_version(self) -> str:
+    def _rust_version(self) -> str:
         output = self._getoutput([*self._rustc, '--version'])
         return re.match(r'^rustc (\d+\.\d+(?:\.\d+)?)', output).group(1)
 
@@ -242,7 +227,7 @@ class Language:
         output = self._getoutput([*self._python, '--version'])
         return re.match(r'^Python (\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _python_interpret(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+    def _python_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
         '''Interpret our Python code for testing.'''
 
         processed = self._run([*self._python, '-c', code])
@@ -261,6 +246,42 @@ class Language:
             raise ValueError(f'Got an unexpected response with error "{processed.stdout}".')
 
         return processed
+
+    # PYTHON
+
+    @property
+    def _julia(self) -> list[str]:
+        return self._get_or_fallbacks(
+            default=['julia'],
+            envvars=['JULIA'],
+            fallbacks=['julia'],
+        )
+
+    @property
+    def _julia_version(self) -> str:
+        output = self._getoutput([*self._julia, '--version'])
+        return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
+
+    def _julia_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+        '''Interpret our Python code for testing.'''
+
+        processed = self._run([*self._julia, '-e', code])
+        is_success = processed.returncode == 0
+
+        # validate error handling
+        if literal and not is_success:
+            errors = ('ERROR: ParseError:', 'ERROR: UndefVarError:', 'ERROR: syntax:')
+        elif not literal and not is_success:
+            errors = ('ERROR: ArgumentError:',)
+        else:
+            errors = ()
+        if not is_success and 'ERROR: AssertionError:' in processed.stdout:
+            raise AssertionError(f'Values did not equal for code "{code}".')
+        if errors and not any(i in processed.stdout for i in errors):
+            raise ValueError(f'Got an unexpected response with error "{processed.stdout}".')
+
+        return processed
+
     # C
 
     @property
@@ -272,14 +293,14 @@ class Language:
         )
 
     @property
-    def _cc_version(self) -> str:
+    def _c_version(self) -> str:
         cc = self._cc
         if cc[0] in ('cl', 'cl.exe'):
             raise ValueError('MSVC is currently unsupported.')
         output = self._getoutput([*cc, '--version'])
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _cc_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+    def _c_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
         '''Run our C compilation build and test.'''
 
         def to_cmd(input: Path, output: Path) -> str:
@@ -287,8 +308,6 @@ class Language:
             if self.langversion:
                 cmd.append(f'-std={self.langversion}')
             return cmd
-
-        # TODO: Need to validate error handling
 
         return self._build_and_test(code, literal, to_cmd)
 
@@ -318,8 +337,6 @@ class Language:
             if self.langversion:
                 cmd.append(f'-std={self.langversion}')
             return cmd
-
-        # TODO: Need to validate error handling
 
         return self._build_and_test(code, literal, to_cmd)
 
@@ -646,6 +663,15 @@ languages = {
         floating='f64',
         int='i32',
         uint='u32',
+    ),
+    'julia': Language(
+        name='julia',
+        literal=read_string(lang / 'literal.jl'),
+        string=read_string(lang / 'string.jl'),
+        extension='.jl',
+        floating='Float64',
+        int='Int32',
+        uint='UInt32',
     ),
 }
 
