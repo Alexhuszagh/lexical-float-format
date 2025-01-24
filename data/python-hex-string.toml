@@ -1,5 +1,5 @@
 [metadata]
-title = "Python - Hex String - {}"
+title = "Python - Hex String - {version}"
 literal = false
 language = "python"
 description = "Parsing numbers via `int(x, 16)`. Supports optional base prefixes."

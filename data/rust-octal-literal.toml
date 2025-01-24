@@ -1,5 +1,5 @@
 [metadata]
-title = "Rust - Octal Literal - {}"
+title = "Rust - Octal Literal - {version}"
 literal = true
 language = "rust"
 description = "Rust literal octal numbers. Requires base prefixes. Does not suppport floats."

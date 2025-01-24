@@ -1,5 +1,5 @@
 [metadata]
-title = "Rust - Hex Literal - {}"
+title = "Rust - Hex Literal - {version}"
 literal = true
 language = "rust"
 description = "Rust literal hexadecimal numbers. Requires base prefixes. Does not suppport floats."

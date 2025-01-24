@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cmath>
 
 typedef int i32;
 typedef unsigned int u32;

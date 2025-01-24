@@ -71,7 +71,7 @@ We use a TOML data format for each language, which dictates the runner and type 
 [metadata]
 # the title to print when running the test
 # the {} is a placeholder for the version
-title = "Rust - Decimal Literal - {}"
+title = "Rust - Decimal Literal - {version}"
 # can be a literal or a string
 literal = true
 # the programming language to use

@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <math.h>
 
 typedef int i32;
 typedef unsigned int u32;

@@ -384,7 +384,7 @@ class File:
         # create our header
         language = self.get_language(command, langversion)
         version = language.get_version()
-        title = self.metadata.title.format(version)
+        title = self.metadata.title.format(version=version, lang=langversion)
         result = [f'## \x1b[1;36m{title}\x1b[0m', '']
         if self.metadata.description is not None:
             result += [self.metadata.description, '']

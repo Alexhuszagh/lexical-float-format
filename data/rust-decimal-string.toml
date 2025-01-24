@@ -1,5 +1,5 @@
 [metadata]
-title = "Rust - Decimal String - {}"
+title = "Rust - Decimal String - {version}"
 literal = false
 language = "rust"
 description = "Parsing numbers via `FromStr`. Does not support base prefixes."

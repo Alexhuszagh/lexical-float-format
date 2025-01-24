@@ -1,5 +1,5 @@
 [metadata]
-title = "Python - Octal Literal - {}"
+title = "Python - Octal Literal - {version}"
 literal = false
 language = "python"
 description = "Parsing numbers via `int(x, 8)`. Supports optional base prefixes."

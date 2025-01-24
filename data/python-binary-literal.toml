@@ -1,5 +1,5 @@
 [metadata]
-title = "Python - Binary Literal - {}"
+title = "Python - Binary Literal - {version}"
 literal = true
 language = "python"
 description = "Python literal binary numbers. Requires base prefixes. Does not suppport floats."

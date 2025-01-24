@@ -1,5 +1,5 @@
 [metadata]
-title = "Python - Binary String - {}"
+title = "Python - Binary String - {version}"
 literal = false
 language = "python"
 description = "Parsing numbers via `int(x, 2)`. Supports optional base prefixes."
