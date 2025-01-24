@@ -12,6 +12,8 @@
     - `python`: `PYTHON`
     - `cc`: `CC`
     - `c++`: `CPP`
+    - `julia`: `JULIA`
+    - `node`: `NODE`
 
     Or these can be specified in a config file.
 '''
@@ -60,12 +62,12 @@ class Language:
     '''Specification for a programming language or data interchange format.'''
 
     name: str
-    literal: str
+    literal: str | None
     string: str
     extension: str
-    floating: str
-    int: str
-    uint: str
+    floating: str | None
+    int: str | None
+    uint: str | None
     # Optional override for the language version
     langversion: str | None = None
     # Optional override for the command
@@ -73,9 +75,12 @@ class Language:
 
     def template(self, literal: bool) -> str:
         '''Get the template string for the test.'''
-        return self.literal if literal else self.string
+        template = self.literal if literal else self.string
+        if template is None:
+            raise ValueError(f'Cannot use literal values for interchange format "{self.name}".')
+        return template
 
-    def build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+    def build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
         '''Build the code snippet, optionally running it, and returning the result.'''
 
         build = getattr(self, f'_{self.name}_build', None)
@@ -143,7 +148,7 @@ class Language:
         return result.stdout
 
     @staticmethod
-    def _run(cmd: list[str]) -> subprocess.CompletedProcess:
+    def _run(cmd: list[str]) -> subprocess.CompletedProcess[str]:
         if verbose:
             print('Running: ' + ' '.join(cmd))
         result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='utf-8')
@@ -156,7 +161,7 @@ class Language:
         code: str,
         literal: bool,
         cmd: Callable[[Path, Path], list[str]],
-    ) -> subprocess.CompletedProcess:
+    ) -> subprocess.CompletedProcess[str]:
         '''Compile and optionally run the compiled code.'''
 
         path = self.write_code(code)
@@ -178,6 +183,31 @@ class Language:
 
         return result
 
+    def _validate(
+        self,
+        code: str,
+        literal: bool,
+        process: subprocess.CompletedProcess[str],
+        literal_errors: tuple[str, ...],
+        parse_errors: tuple[str, ...],
+        assertion_errors: tuple[str, ...],
+    ) -> None:
+        '''Validate the completed results from our code.'''
+
+        is_success = process.returncode == 0
+
+        # validate error handling
+        if literal and not is_success:
+            errors = literal_errors
+        elif not literal and not is_success:
+            errors = parse_errors
+        else:
+            errors = ()
+        if not is_success and any(i in process.stdout for i in assertion_errors):
+            raise AssertionError(f'Values did not equal for code "{code}".')
+        if errors and not any(i in process.stdout for i in errors):
+            raise ValueError(f'Got an unexpected response with error "{process.stdout}".')
+
     # RUST
 
     @property
@@ -189,28 +219,22 @@ class Language:
         output = self._getoutput([*self._rustc, '--version'])
         return re.match(r'^rustc (\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _rust_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+    def _rust_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
         '''Run our Rust compilation build and test.'''
 
         def to_cmd(input: Path, output: Path) -> str:
             return [*self._rustc, str(input), '-o', str(output)]
 
-        processed = self._build_and_test(code, literal, to_cmd)
-        is_success = processed.returncode == 0
-
-        # validate error handling
-        if literal and not is_success:
-            errors = ('error:',)
-        elif not literal and not is_success:
-            errors = ('`Err`',)
-        else:
-            errors = ()
-        if not is_success and 'assertion `left == right` failed' in processed.stdout:
-            raise AssertionError(f'Values did not equal for code "{code}".')
-        if errors and not any(i in processed.stdout for i in errors):
-            raise ValueError(f'Got an unexpected response with error "{processed.stdout}".')
-
-        return processed
+        process = self._build_and_test(code, literal, to_cmd)
+        self._validate(
+            code=code,
+            literal=literal,
+            process=process,
+            literal_errors=('error:',),
+            parse_errors=('`Err`',),
+            assertion_errors=('assertion `left == right` failed',),
+        )
+        return process
 
     # PYTHON
 
@@ -227,27 +251,21 @@ class Language:
         output = self._getoutput([*self._python, '--version'])
         return re.match(r'^Python (\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _python_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+    def _python_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
         '''Interpret our Python code for testing.'''
 
-        processed = self._run([*self._python, '-c', code])
-        is_success = processed.returncode == 0
+        process = self._run([*self._python, '-c', code])
+        self._validate(
+            code=code,
+            literal=literal,
+            process=process,
+            literal_errors=('SyntaxError:', 'NameError:'),
+            parse_errors=('ValueError:',),
+            assertion_errors=('AssertionError:',),
+        )
+        return process
 
-        # validate error handling
-        if literal and not is_success:
-            errors = ('SyntaxError:', 'NameError:')
-        elif not literal and not is_success:
-            errors = ('ValueError:',)
-        else:
-            errors = ()
-        if not is_success and 'AssertionError:' in processed.stdout:
-            raise AssertionError(f'Values did not equal for code "{code}".')
-        if errors and not any(i in processed.stdout for i in errors):
-            raise ValueError(f'Got an unexpected response with error "{processed.stdout}".')
-
-        return processed
-
-    # PYTHON
+    # JULIA
 
     @property
     def _julia(self) -> list[str]:
@@ -262,25 +280,19 @@ class Language:
         output = self._getoutput([*self._julia, '--version'])
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _julia_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+    def _julia_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
         '''Interpret our Python code for testing.'''
 
-        processed = self._run([*self._julia, '-e', code])
-        is_success = processed.returncode == 0
-
-        # validate error handling
-        if literal and not is_success:
-            errors = ('ERROR: ParseError:', 'ERROR: UndefVarError:', 'ERROR: syntax:')
-        elif not literal and not is_success:
-            errors = ('ERROR: ArgumentError:',)
-        else:
-            errors = ()
-        if not is_success and 'ERROR: AssertionError:' in processed.stdout:
-            raise AssertionError(f'Values did not equal for code "{code}".')
-        if errors and not any(i in processed.stdout for i in errors):
-            raise ValueError(f'Got an unexpected response with error "{processed.stdout}".')
-
-        return processed
+        process = self._run([*self._julia, '-e', code])
+        self._validate(
+            code=code,
+            literal=literal,
+            process=process,
+            literal_errors=('ERROR: ParseError:', 'ERROR: UndefVarError:', 'ERROR: syntax:'),
+            parse_errors=('ERROR: ArgumentError:',),
+            assertion_errors=('ERROR: AssertionError:',),
+        )
+        return process
 
     # C
 
@@ -300,7 +312,7 @@ class Language:
         output = self._getoutput([*cc, '--version'])
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _c_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+    def _c_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
         '''Run our C compilation build and test.'''
 
         def to_cmd(input: Path, output: Path) -> str:
@@ -329,7 +341,7 @@ class Language:
         output = self._getoutput([*cpp, '--version'])
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _cpp_build(self, code: str, literal: bool) -> subprocess.CompletedProcess:
+    def _cpp_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
         '''Run our C compilation build and test.'''
 
         def to_cmd(input: Path, output: Path) -> str:
@@ -339,6 +351,45 @@ class Language:
             return cmd
 
         return self._build_and_test(code, literal, to_cmd)
+
+    # NODE
+
+    @property
+    def _node(self) -> list[str]:
+        return self._get_or_fallbacks(
+            default=['node'],
+            envvars=['NODE'],
+            fallbacks=['nodejs', 'node'],
+        )
+
+    @property
+    def _node_version(self) -> str:
+        output = self._getoutput([*self._node, '--version'])
+        return re.match(r'^v(\d+\.\d+(?:\.\d+)?)', output).group(1)
+
+    def _node_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+        '''Interpret our Node.JS code for testing.'''
+        raise NotImplementedError('TODO')
+
+    # JSON
+
+    @property
+    def _json_version(self) -> str:
+        # JSON has no version but is stable
+        return "1.0"
+
+    def _json_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+        '''Interpret our Python code for testing.'''
+        process = self._run([*self._node, '-e', code])
+        self._validate(
+            code=code,
+            literal=literal,
+            process=process,
+            literal_errors=(),
+            parse_errors=('SyntaxError:',),
+            assertion_errors=('[ERR_ASSERTION]:',),
+        )
+        return process
 
 
 @dataclass
@@ -487,7 +538,7 @@ class Case:
         self,
         language: Language,
         literal: bool,
-        data_type: str,
+        data_type: str | None,
         base: int = 10,
     ) -> str:
         '''Run a single test case for a given language.'''
@@ -507,7 +558,7 @@ class Case:
         self,
         language: Language,
         literal: bool,
-        data_type: str,
+        data_type: str | None,
         base: int = 10,
     ) -> bool:
         '''Test one or more values and return if the test passed.'''
@@ -527,7 +578,7 @@ class Case:
         value: str,
         expected: str,
         literal: bool,
-        data_type: str,
+        data_type: str | None,
         base: int = 10,
     ) -> bool:
         '''Run a test case for a single value.'''
@@ -548,7 +599,7 @@ class Case:
         value: list[str],
         expected: list[str],
         literal: bool,
-        data_type: str,
+        data_type: str | None,
         base: int = 10,
     ) -> bool:
         '''Run a test case for multiple values.'''
@@ -672,6 +723,15 @@ languages = {
         floating='Float64',
         int='Int32',
         uint='UInt32',
+    ),
+    'json': Language(
+        name='json',
+        literal=None,
+        string=read_string(lang / 'json.js'),
+        extension='.json',
+        floating=None,
+        int=None,
+        uint=None,
     ),
 }
 

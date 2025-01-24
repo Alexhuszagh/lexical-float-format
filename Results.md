@@ -1,6 +1,8 @@
 # Results
 
-## Rust - Binary Literal - 1.81.0
+## Rust
+
+### Binary Literal - 1.81.0
 
 Rust literal binary numbers. Requires base prefixes. Does not suppport floats.
 
@@ -22,7 +24,7 @@ Rust literal binary numbers. Requires base prefixes. Does not suppport floats.
 | I/s | ❌ | _-0b11 | Integer sign digit separator. |
 | I/c | ❌ | __-0b11 | Integer sign consecutive digit separator. |
 
-## Rust - Decimal Literal - 1.81.0
+### Decimal Literal - 1.81.0
 
 Rust literal decimal numbers. Does not support base prefixes.
 
@@ -79,7 +81,7 @@ Rust literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Rust - Decimal String - 1.81.0
+### Decimal String - 1.81.0
 
 Parsing numbers via `FromStr`. Does not support base prefixes.
 
@@ -136,7 +138,7 @@ Parsing numbers via `FromStr`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Rust - Hex Literal - 1.81.0
+### Hex Literal - 1.81.0
 
 Rust literal hexadecimal numbers. Requires base prefixes. Does not suppport floats.
 
@@ -158,7 +160,7 @@ Rust literal hexadecimal numbers. Requires base prefixes. Does not suppport floa
 | I/s | ❌ | _-0x11 | Integer sign digit separator. |
 | I/c | ❌ | __-0x11 | Integer sign consecutive digit separator. |
 
-## Rust - Octal Literal - 1.81.0
+### Octal Literal - 1.81.0
 
 Rust literal octal numbers. Requires base prefixes. Does not suppport floats.
 
@@ -180,7 +182,9 @@ Rust literal octal numbers. Requires base prefixes. Does not suppport floats.
 | I/s | ❌ | _-0o11 | Integer sign digit separator. |
 | I/c | ❌ | __-0o11 | Integer sign consecutive digit separator. |
 
-## Python - Decimal Literal - 2.7.18
+## Python
+
+### Decimal Literal - 2.7.18
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -237,7 +241,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 2.7.18
+### Decimal String - 2.7.18
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -294,7 +298,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.3.5
+### Decimal Literal - 3.3.5
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -351,7 +355,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.3.5
+### Decimal String - 3.3.5
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -408,7 +412,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.4.4
+### Decimal Literal - 3.4.4
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -465,7 +469,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.4.4
+### Decimal String - 3.4.4
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -522,7 +526,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.5.4
+### Decimal Literal - 3.5.4
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -579,7 +583,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.5.4
+### Decimal String - 3.5.4
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -636,7 +640,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.6.8
+### Decimal Literal - 3.6.8
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -693,7 +697,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.6.8
+### Decimal String - 3.6.8
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -750,7 +754,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.7.9
+### Decimal Literal - 3.7.9
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -807,7 +811,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.7.9
+### Decimal String - 3.7.9
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -864,7 +868,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.8.10
+### Decimal Literal - 3.8.10
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -921,7 +925,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.8.10
+### Decimal String - 3.8.10
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -978,7 +982,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.9.2
+### Decimal Literal - 3.9.2
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -1035,7 +1039,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.9.2
+### Decimal String - 3.9.2
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -1092,7 +1096,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.10.0
+### Decimal Literal - 3.10.0
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -1149,7 +1153,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.10.0
+### Decimal String - 3.10.0
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -1206,7 +1210,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.11.9
+### Decimal Literal - 3.11.9
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -1263,7 +1267,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.11.9
+### Decimal String - 3.11.9
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -1320,7 +1324,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.12.0
+### Decimal Literal - 3.12.0
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -1377,7 +1381,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.12.0
+### Decimal String - 3.12.0
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -1434,7 +1438,7 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal Literal - 3.13.1
+### Decimal Literal - 3.13.1
 
 Python literal decimal numbers. Does not support base prefixes.
 
@@ -1491,7 +1495,7 @@ Python literal decimal numbers. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Python - Decimal String - 3.13.1
+### Decimal String - 3.13.1
 
 Parsing numbers via `float` or `int`. Does not support base prefixes.
 
@@ -1548,7 +1552,9 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
-## Julia - Decimal Literal - 1.11.2
+## Julia
+
+### Decimal Literal - 1.11.2
 
 Julia literal decimal numbers. Does not support base prefixes.
 
@@ -1609,7 +1615,7 @@ Julia literal decimal numbers. Does not support base prefixes.
 | -/M | ❌ | -1 | No mantissa positive or negative sign. |
 | -/U | ❌ | -0 | No unsigned integer negative sign. |
 
-## Julia - Decimal String - 1.11.2
+### Decimal String - 1.11.2
 
 Parsing numbers via `Float64`, `Int64`, or `UInt64`. Does not support base prefixes.
 
@@ -1669,3 +1675,63 @@ Parsing numbers via `Float64`, `Int64`, or `UInt64`. Does not support base prefi
 | e/S | ❌ | 12D | Case-sensitive base suffix. |
 | -/M | ❌ | -1 | No mantissa positive or negative sign. |
 | -/U | ✅ | -0 | No unsigned integer negative sign. |
+
+## JSON
+
+Parsing numbers via the JSON `Number` type(all are floats).Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|: -:|: -:|: -:|: -:|
+|  | ✅ | 0.1 | Simple |
+| I / R | ✅ | .1 | Required integer digits. |
+| F / R | ✅ | 1. | Required fraction digits. |
+| E / R | ✅ | 1.0e | Required exponent digits. |
+| M / R | ✅ | . | Required mantissa digits. |
+| +/M | ✅ | +1.2 | No mantissa positive sign. |
+| R / M | ❌ | 1.2 | Required positive sign. |
+| e / e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R / E | ❌ | 1.0e3 | Required exponent sign. |
+| e / F | ❌ | 1e3 | No exponent without fraction. |
+| S / S | ✅ | NaN | No special(non - finite) values. |
+| S / C | ✅ | inf | Case - sensitive special(non - finite) values. |
+| N / F | ✅ | 001.2 | No float leading zeros. |
+| R / e | ❌ | 1.2 | Required exponent notation. |
+| e / C | ❌ | 1.0E3 | Case - sensitive exponent character. |
+| I / E | ✅ | .1E3 | Require integer digits with exponent. |
+| F / E | ✅ | 1.E3 | Require fraction digits with exponent. |
+| r / P | ❌ | 0d12 | Require base prefixes. |
+| r / S | ❌ | 12d | Require base suffixes. |
+| M / E | ✅ | .e3 | Require mantissa digits with exponent. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+| I / I | ❌ | 1_1.11e11 | Integer internal digit separator. |
+| F / I | ❌ | 11.1_1e11 | Fraction internal digit separator. |
+| E / I | ❌ | 11.11e1_1 | Exponent internal digit separator. |
+| I / L | ❌ | -_11.11e11 | Integer leading digit separator. |
+| F / L | ❌ | 11._11e11 | Fraction leading digit separator. |
+| E / L | ❌ | 11.11e_11 | Exponent leading digit separator. |
+| I / T | ❌ | 11_.11e11 | Integer trailing digit separator. |
+| F / T | ❌ | 11.11_e11 | Fraction trailing digit separator. |
+| E / T | ❌ | 11.11e11_ | Exponent trailing digit separator. |
+| I / C | ❌ | 1__1.11e11 | Integer consecutive digit separator. |
+| F / C | ❌ | 11.1__1e11 | Fraction consecutive digit separator. |
+| E / C | ❌ | 11.11e1__1 | Exponent consecutive digit separator. |
+| S / D | ❌ | N_a_N | Special(non - finite) digit separator. |
+| s / D | ❌ | _11.11e11 | Absolute start digit separator. |
+| I / s | ❌ | _ - 11.11e11 | Integer sign digit separator. |
+| I / c | ❌ | __ - 11.11e11 | Integer sign consecutive digit separator. |
+| E / s | ❌ | 11.11e_ - 11 | Exponent sign digit separator. |
+| E / c | ❌ | 11.11e__ - 11 | Exponent sign consecutive digit separator. |
+| P / I | ❌ | 0_d11.11e11 | Base prefix internal digit separator. |
+| P / L | ❌ | -_0d11.11e11 | Base prefix leading digit separator. |
+| P / T | ❌ | 0d_11.11e11 | Base prefix trailing digit separator. |
+| P / C | ❌ | 0d__11.11e11 | Base prefix consecutive digit separator. |
+| S / I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S / L | ❌ | 011.11e11_d | Base suffix leading digit separator. |
+| S / T | ❌ | 011.11e11d_ | Base suffix trailing digit separator. |
+| S / C | ❌ | 011.11e11d__ | Base suffix consecutive digit separator. |
+| N / I | ✅ | 0012 | No integer leading zeros. |
+| e / P | ❌ | 0D12 | Case - sensitive base prefix. |
+| e / S | ❌ | 12D | Case - sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
