@@ -1,8 +1,8 @@
 [metadata]
 title = "C - Decimal Literal - {}"
 literal = true
-language = 'c'
-description = 'C literal decimal numbers. Does not support base prefixes.'
+language = "c"
+description = "C literal decimal numbers. Does not support base prefixes."
 
 # Non-Digit Separator Flags
 
@@ -12,3 +12,5 @@ title = "Simple"
 flags = ""
 outcome = "pass"
 expected = "0.1"
+
+# TODO: Add more here

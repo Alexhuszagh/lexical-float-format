@@ -99,7 +99,7 @@ title = "Required integer digits."
 flags = "I/R"
 outcome = "pass"
 
-[[integers]]
+[[ints]]
 # the value to test (required)
 value = ".1"
 # the title for the test (required)

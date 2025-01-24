@@ -1,8 +1,8 @@
 [metadata]
 title = "Rust - Decimal Literal - {}"
 literal = true
-language = 'rust'
-description = 'Rust literal decimal numbers. Does not support base prefixes.'
+language = "rust"
+description = "Rust literal decimal numbers. Does not support base prefixes."
 
 # Non-Digit Separator Flags
 
@@ -13,7 +13,7 @@ flags = ""
 outcome = "pass"
 expected = "0.1"
 
-[[integers]]
+[[ints]]
 value = "12"
 title = "Simple"
 flags = ""
@@ -344,25 +344,53 @@ flags = "S/C"
 outcome = "pass"
 expected = "11.11e11"
 
+[[floats]]
+value = "-1.0"
+title = "No mantissa positive or negative sign."
+flags = "-/M"
+outcome = "fail"
+expected = "-1.0"
+
+[[floats]]
+value = "1.0e-3"
+title = "No exponent positive or negative sign."
+flags = "-/E"
+outcome = "fail"
+expected = "1.0e-3"
+
 # Integers
 
-[[integers]]
+[[ints]]
 value = "0012"
 title = "No integer leading zeros."
 flags = "N/I"
 outcome = "fail"
 expected = "12"
 
-[[integers]]
+[[ints]]
 value = "0D12"
 title = "Case-sensitive base prefix."
 flags = "e/P"
 outcome = "pass"
 expected = "12"
 
-[[integers]]
+[[ints]]
 value = "12D"
 title = "Case-sensitive base suffix."
 flags = "e/S"
 outcome = "pass"
 expected = "12"
+
+[[ints]]
+value = "-1"
+title = "No mantissa positive or negative sign."
+flags = "-/M"
+outcome = "fail"
+expected = "-1"
+
+[[uints]]
+value = "-0"
+title = "No unsigned integer negative sign."
+flags = "-/U"
+outcome = "fail"
+expected = "0"

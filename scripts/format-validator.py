@@ -64,7 +64,8 @@ class Language:
     string: str
     extension: str
     floating: str
-    integer: str
+    int: str
+    uint: str
     # Optional override for the language version
     langversion: str | None = None
     # Optional override for the command
@@ -330,7 +331,8 @@ class File:
     path: Path
     metadata: 'Metadata'
     floats: list['Case']
-    integers: list['Case']
+    ints: list['Case']
+    uints: list['Case']
 
     @classmethod
     def load(cls, path: Path):
@@ -345,18 +347,20 @@ class File:
                     "language": "",
                 },
                 "floats": [...],
-                "integers": [...],
+                "ints": [...],
+                "uints": [...],
             }
         '''
 
         with path.open(encoding='utf-8') as file:
             data = tomllib.loads(file.read())
 
-        metadata = Metadata(**data['metadata'])
-        floats = [Case(**i) for i in data.get('floats', [])]
-        integers = [Case(**i) for i in data.get('integers', [])]
+        metadata = Metadata(**data.pop('metadata'))
+        floats = [Case(**i) for i in data.pop('floats', [])]
+        ints = [Case(**i) for i in data.pop('ints', [])]
+        uints = [Case(**i) for i in data.pop('uints', [])]
 
-        return cls(path=path, metadata=metadata, floats=floats, integers=integers)
+        return cls(path=path, metadata=metadata, floats=floats, ints=ints, uints=uints, **data)
 
     def run(self, command: str | None = None, langversion: str | None = None) -> str:
         '''
@@ -394,11 +398,18 @@ class File:
                 data_type=language.floating,
                 base=self.metadata.base,
             ))
-        for case in self.integers:
+        for case in self.ints:
             result.append(case.run(
                 language=language,
                 literal=self.metadata.literal,
-                data_type=language.integer,
+                data_type=language.int,
+                base=self.metadata.base,
+            ))
+        for case in self.uints:
+            result.append(case.run(
+                language=language,
+                literal=self.metadata.literal,
+                data_type=language.uint,
                 base=self.metadata.base,
             ))
 
@@ -606,7 +617,8 @@ languages = {
         string=read_string(lang / 'string.rs'),
         extension='.rs',
         floating='f64',
-        integer='i64',
+        int='i64',
+        uint='u64',
     ),
     'python': Language(
         name='python',
@@ -614,7 +626,8 @@ languages = {
         string=read_string(lang / 'string.py'),
         extension='.py',
         floating='float',
-        integer='int',
+        int='int',
+        uint='int',
     ),
     'c': Language(
         name='c',
@@ -622,7 +635,8 @@ languages = {
         string=read_string(lang / 'string.c'),
         extension='.c',
         floating='f64',
-        integer='i32',
+        int='i32',
+        uint='u32',
     ),
     'cpp': Language(
         name='cpp',
@@ -630,7 +644,8 @@ languages = {
         string=read_string(lang / 'string.cpp'),
         extension='.cpp',
         floating='f64',
-        integer='i32',
+        int='i32',
+        uint='u32',
     ),
 }
 

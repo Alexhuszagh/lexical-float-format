@@ -1,8 +1,8 @@
 [metadata]
 title = "Python - Octal Literal - {}"
 literal = false
-language = 'python'
-description = 'Parsing numbers via `int(x, 8)`. Supports optional base prefixes.'
+language = "python"
+description = "Parsing numbers via `int(x, 8)`. Supports optional base prefixes."
 base = 8
 
 # Non-Digit Separator Flags
@@ -16,107 +16,107 @@ expected = "0.125"
 
 # Integers
 
-[[integers]]
+[[ints]]
 value = "12"
 title = "Simple"
 flags = ""
 outcome = "pass"
 expected = "10"
 
-[[integers]]
-value = "0o0012"
-title = "No integer leading zeros."
-flags = "N/I"
-outcome = "fail"
-expected = "10"
-
-[[integers]]
+[[ints]]
 value = "0O12"
 title = "Case-sensitive base prefix."
 flags = "e/P"
 outcome = "fail"
 expected = "10"
 
-[[integers]]
+[[ints]]
 value = "0o12O"
 title = "Case-sensitive base suffix."
 flags = "e/S"
 outcome = "fail"
 expected = "10"
 
-[[integers]]
+[[ints]]
 value = "0o"
 title = "Required mantissa digits."
 flags = "M/R"
 outcome = "fail"
 expected = "0"
 
-[[integers]]
+[[ints]]
 value = "0o"
 title = "Required integer digits."
 flags = "I/R"
 outcome = "fail"
 expected = "0"
 
-[[integers]]
+[[ints]]
 value = "+0o12"
 title = "No mantissa positive sign."
 flags = "+/M"
 outcome = "fail"
 expected = "10"
 
-[[integers]]
+[[ints]]
 value = "0o12"
 title = "Required positive sign."
 flags = "R/M"
 outcome = "fail"
 expected = "10"
 
-[[integers]]
+[[ints]]
 value = "0o1_1"
 title = "Integer internal digit separator."
 flags = "I/I"
 outcome = "pass"
 expected = "9"
 
-[[integers]]
+[[ints]]
 value = "0o_11"
 title = "Integer leading digit separator."
 flags = "I/L"
 outcome = "pass"
 expected = "9"
 
-[[integers]]
+[[ints]]
 value = "0o11_"
 title = "Integer trailing digit separator."
 flags = "I/T"
 outcome = "pass"
 expected = "9"
 
-[[integers]]
+[[ints]]
 value = "0o1__1"
 title = "Integer consecutive digit separator."
 flags = "I/C"
 outcome = "pass"
 expected = "9"
 
-[[integers]]
+[[ints]]
 value = "_0o11"
 title = "Absolute start digit separator."
 flags = "s/D"
 outcome = "pass"
 expected = "9"
 
-[[integers]]
+[[ints]]
 value = "_-0o11"
 title = "Integer sign digit separator."
 flags = "I/s"
 outcome = "pass"
 expected = "9"
 
-[[integers]]
+[[ints]]
 value = "__-0o11"
 title = "Integer sign consecutive digit separator."
 flags = "I/c"
 outcome = "pass"
 expected = "9"
+
+[[ints]]
+value = "-0o1"
+title = "No mantissa positive or negative sign."
+flags = "-/M"
+outcome = "fail"
+expected = "-1"
