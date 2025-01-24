@@ -8,7 +8,94 @@ For each test, if it supports custom hex strings, the special strings, or simila
 
 1. [Rust](https://rustup.rs/)
 2. [Python](https://www.python.org/downloads/)
-3. [C#](https://dotnet.microsoft.com/en-us/download)
+3. [C/C++](https://gcc.gnu.org/)
+4. [Julia](https://julialang.org/)
+5. [Go](https://go.dev/)
+6. [Elm](https://elm-lang.org/)
+7. [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+8. [Ruby](https://www.ruby-lang.org/en/)
+9. [Elixir](https://elixir-lang.org/)
+10. [Scala](https://www.scala-lang.org/)
+11. [Haskell](https://www.haskell.org/ghc/)
+12. [Perl](https://www.perl.org/)
+13. [PHP](https://www.php.net/)
+14. [Kotlin](https://kotlinlang.org/)
+15. [R](https://www.r-project.org/)
+16. [Gambit-C](https://gambitscheme.org/)
+17. [Guile](https://www.gnu.org/software/guile/)
+18. [Clojure](https://clojure.org/)
+19. [Erlang](https://www.erlang.org/)
+20. [FORTRAN](https://fortran-lang.org/)
+21. [D](https://dlang.org/)
+22. [CoffeeScript](https://coffeescript.org/)
+23. [COBOL](https://www.ibm.com/think/topics/cobol)
+24. [Flutter](https://flutter.dev/)
+25. [.NET](https://learn.microsoft.com/en-us/dotnet/)
+26. [OCaml](https://ocaml.org/)
+27. [Objective-C](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html)
+28. [ReasonML](https://reasonml.github.io/)
+29. [Zig](https://ziglang.org)
+30. [Octave](https://octave.org/) (and MATLAB)
+31. [SageMath](https://www.sagemath.org/)
+32. [Java](https://www.java.com/en/)
+33. [Pascal](https://www.lazarus-ide.org/)
+34. [Lua](https://www.lua.org/)
+35. [Groovy](https://groovy-lang.org/)
+36. [Lisp](https://lisp-lang.org/)
+37. [ADA](https://ada-lang.io/)
+38. [Nim](https://nim-lang.org/)
+39. [Crystal](https://crystal-lang.org/)
+40. [Swift](https://www.swift.org/)
+
+On Ubuntu, these toolchains can be installed as follows:
+
+```bash
+sudo apt install -y \
+    elm-compiler \
+    gcc g++ \
+    python3 python-is-python3 \
+    golang-go \
+    nodejs \
+    ruby \
+    elixir \
+    scala \
+    ghc \
+    php-cli \
+    kotlin \
+    r-base-core \
+    gambc \
+    guile-3.0 \
+    clojure \
+    coffeescript \
+    gnucobol3 \
+    dotnet-host-8.0 dotnet-sdk-8.0 \
+    ocaml opam \
+    gobjc \
+    octave \
+    gdebi \
+    lua5.4 \
+    groovy \
+    sbcl \
+    alire \
+    nim \
+    crystal
+
+sudo snap install julia --classic
+sudo snap install dmd --classic
+sudo snap install flutter --classic
+sudo snap install --beta zig --classic
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+opam init
+opam install reason
+
+# Swift is a pain
+curl https://download.swift.org/swift-6.0.3-release/ubuntu2404/swift-6.0.3-RELEASE/swift-6.0.3-RELEASE-ubuntu24.04.tar.gz
+mv swift-6.0.3-RELEASE-ubuntu24.04.tar.gz ~/Downloads
+tar xvf ~/Downloads/swift-6.0.3-RELEASE-ubuntu24.04.tar.gz -C ~/Downloads/
+mv ~/Downloads/swift-6.0.3-RELEASE-ubuntu24.04 ~/Downloads/swift
+```
 
 ## Running Tests
 
