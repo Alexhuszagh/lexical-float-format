@@ -1552,6 +1552,1746 @@ Parsing numbers via `float` or `int`. Does not support base prefixes.
 | e/P | ❌ | 0D1 | Case-sensitive base prefix. |
 | e/S | ❌ | 1D | Case-sensitive base suffix. |
 
+## C
+
+### Decimal Literal - 13.3.0 - Default
+
+C literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c89
+
+C literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ✅ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c90
+
+C literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ✅ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c99
+
+C literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c11
+
+C literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c17
+
+C literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - Default
+
+C string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c89
+
+C string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c90
+
+C string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c99
+
+C string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c11
+
+C string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c17
+
+C string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+## C++
+
+### Decimal Literal - 13.3.0 - Default
+
+C++ literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ✅ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ✅ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ✅ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c++98
+
+C++ literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c++03
+
+C++ literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c++11
+
+C++ literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c++14
+
+C++ literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ✅ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ✅ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ✅ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c++17
+
+C++ literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ✅ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ✅ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ✅ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c++20
+
+C++ literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ✅ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ✅ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ✅ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal Literal - 13.3.0 - c++23
+
+C++ literal decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ✅ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ✅ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ✅ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ✅ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ✅ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ✅ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ✅ | 0012X | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - Default
+
+C++ string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c++98
+
+C++ string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c++03
+
+C++ string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c++11
+
+C++ string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c++14
+
+C++ string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c++17
+
+C++ string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c++20
+
+C++ string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
+### Decimal String - 13.3.0 - c++23
+
+C++ string decimal numbers. Does not support base prefixes.
+
+| Flag | Pass | Value | Title |
+|:-:|:-:|:-:|:-:|
+|  | ✅ | 0.1 | Simple |
+| I/R | ❌ | .1 | Required integer digits. |
+| F/R | ❌ | 1. | Required fraction digits. |
+| E/R | ✅ | 1.0e | Required exponent digits. |
+| M/R | ✅ | . | Required mantissa digits. |
+| +/M | ❌ | +1.2 | No mantissa positive sign. |
+| R/M | ❌ | 1.0 | Required positive sign. |
+| e/e | ❌ | 1.0e3 | No exponent notation. |
+| +/E | ❌ | 1.0e+3 | No exponent positive sign. |
+| R/E | ❌ | 1.0e3 | Required exponent sign. |
+| e/F | ❌ | 1e3 | No exponent without fraction. |
+| S/S | ❌ | NAN | No special (non-finite) values. |
+| S/C | ❌ | nan | Case-sensitive special (non-finite) values. |
+| N/F | ❌ | 001.2 | No float leading zeros. |
+| R/e | ❌ | 1.2 | Required exponent notation. |
+| e/C | ❌ | 1.0E3 | Case-sensitive exponent character. |
+| I/E | ❌ | .1E3 | Require integer digits with exponent. |
+| F/E | ❌ | 1.E3 | Require fraction digits with exponent. |
+| r/P | ❌ | 0d1.2 | Require base prefixes. |
+| r/S | ❌ | 1.2d | Require base suffixes. |
+| M/E | ✅ | .e3 | Require mantissa digits with exponent. |
+| I/I | ❌ | 1'1.11e11 | Integer internal digit separator. |
+| F/I | ❌ | 11.1'1e11 | Fraction internal digit separator. |
+| E/I | ❌ | 11.11e1'1 | Exponent internal digit separator. |
+| I/L | ❌ | -'11.11e11 | Integer leading digit separator. |
+| F/L | ❌ | 11.'11e11 | Fraction leading digit separator. |
+| E/L | ❌ | 11.11e'11 | Exponent leading digit separator. |
+| I/T | ❌ | 11'.11e11 | Integer trailing digit separator. |
+| F/T | ❌ | 11.11'e11 | Fraction trailing digit separator. |
+| E/T | ❌ | 11.11e11' | Exponent trailing digit separator. |
+| I/C | ❌ | 1''1.11e11 | Integer consecutive digit separator. |
+| F/C | ❌ | 11.1''1e11 | Fraction consecutive digit separator. |
+| E/C | ❌ | 11.11e1''1 | Exponent consecutive digit separator. |
+| S/D | ❌ | N'a'N | Special (non-finite) digit separator. |
+| s/D | ❌ | '11.11e11 | Absolute start digit separator. |
+| I/s | ❌ | '-11.11e11 | Integer sign digit separator. |
+| I/c | ❌ | ''-11.11e11 | Integer sign consecutive digit separator. |
+| E/s | ❌ | 11.11e'-11 | Exponent sign digit separator. |
+| E/c | ❌ | 11.11e''-11 | Exponent sign consecutive digit separator. |
+| P/I | ❌ | 0'd11.11e11 | Base prefix internal digit separator. |
+| P/L | ❌ | -'0d11.11e11 | Base prefix leading digit separator. |
+| P/T | ❌ | 0d'11.11e11 | Base prefix trailing digit separator. |
+| P/C | ❌ | 0d''11.11e11 | Base prefix consecutive digit separator. |
+| S/I | ❌ | 011.11e11d | Base suffix internal digit separator. |
+| S/L | ❌ | 011.11e11'd | Base suffix leading digit separator. |
+| S/T | ❌ | 011.11e11d' | Base suffix trailing digit separator. |
+| S/C | ❌ | 011.11e11d'' | Base suffix consecutive digit separator. |
+| -/M | ❌ | -1.0 | No mantissa positive or negative sign. |
+| -/E | ❌ | 1.0e-3 | No exponent positive or negative sign. |
+|  | ✅ | 12 | Simple |
+| N/I | ❌ | 0012 | No integer leading zeros. |
+| e/P | ❌ | 0D12 | Case-sensitive base prefix. |
+| e/S | ❌ | 12D | Case-sensitive base suffix. |
+| -/M | ❌ | -1 | No mantissa positive or negative sign. |
+| -/U | ❌ | -0 | No unsigned integer negative sign. |
+
 ## Julia
 
 ### Decimal Literal - 1.11.2

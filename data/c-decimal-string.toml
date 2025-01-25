@@ -95,14 +95,15 @@ value = ["NAN", "INFINITY"]
 title = "No special (non-finite) values."
 flags = "S/S"
 outcome = "fail"
-expected = ["NAN", "INFINITY"]
+# NOTE: C89 does not support NAN or INFINITY
+expected = ["0.0 / 0.0", "1.0 / 0.0"]
 
 [[floats]]
 value = ["nan"]
 title = "Case-sensitive special (non-finite) values."
 flags = "S/C"
 outcome = "fail"
-expected = ["NAN"]
+expected = ["0.0 / 0.0"]
 
 [[floats]]
 value = "001.2"
@@ -251,7 +252,7 @@ value = ["N'a'N", "in'finity"]
 title = "Special (non-finite) digit separator."
 flags = "S/D"
 outcome = "pass"
-expected = ["NAN", "INFINITY"]
+expected = ["0.0 / 0.0", "1.0 / 0.0"]
 
 [[floats]]
 value = "'11.11e11"
