@@ -91,7 +91,7 @@ outcome = "fail"
 expected = "1e3"
 
 [[floats]]
-value = ["NAN", "INFINITY"]
+value = ["NaN", "Inf"]
 title = "No special (non-finite) values."
 flags = "S/S"
 outcome = "fail"
@@ -247,7 +247,7 @@ outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = ["N_a_N", "in_finity"]
+value = ["N_a_N", "in_f"]
 title = "Special (non-finite) digit separator."
 flags = "S/D"
 outcome = "pass"

@@ -14,6 +14,8 @@
     - `c++`: `CPP`
     - `julia`: `JULIA`
     - `node`: `NODE`
+    - `go`: `GO`
+    - `ruby`: `RUBY`
 
     Or these can be specified in a config file.
 '''
@@ -310,7 +312,7 @@ class Language:
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
     def _julia_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
-        '''Interpret our Python code for testing.'''
+        '''Interpret our Julia code for testing.'''
 
         process = self._run([*self._julia, '-e', code])
         self._validate(
@@ -320,6 +322,35 @@ class Language:
             literal_errors=('ERROR: ParseError:', 'ERROR: UndefVarError:', 'ERROR: syntax:'),
             parse_errors=('ERROR: ArgumentError:',),
             assertion_errors=('ERROR: AssertionError:',),
+        )
+        return process
+
+    # RUBY
+
+    @property
+    def _ruby(self) -> list[str]:
+        return self._get_or_fallbacks(
+            default=['ruby'],
+            envvars=['JULIA'],
+            fallbacks=['ruby'],
+        )
+
+    @property
+    def _ruby_version(self) -> str:
+        output = self._getoutput([*self._ruby, '--version'])
+        return re.match(r'^ruby (\d+\.\d+(?:\.\d+)?)', output).group(1)
+
+    def _ruby_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+        '''Interpret our Ruby code for testing.'''
+
+        process = self._run([*self._ruby, '-e', code])
+        self._validate(
+            code=code,
+            literal=literal,
+            process=process,
+            literal_errors=('(SyntaxError)', '(NameError)', '(NoMethodError)'),
+            parse_errors=('(ArgumentError)',),
+            assertion_errors=('(AssertionError)',),
         )
         return process
 
@@ -380,7 +411,7 @@ class Language:
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
     def _cpp_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
-        '''Run our C compilation build and test.'''
+        '''Run our C++ compilation build and test.'''
 
         def to_cmd(input: Path, output: Path) -> str:
             cmd = [*self._cpp, str(input), '-o', str(output)]
@@ -411,7 +442,7 @@ class Language:
         return re.match(r'^.*?go(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
     def _go_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
-        '''Run our Rust compilation build and test.'''
+        '''Run our Go compilation build and test.'''
 
         path = self.write_code(code)
         process = self._run([*self._go, 'run', str(path)])
@@ -458,7 +489,7 @@ class Language:
         return "1.0"
 
     def _json_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
-        '''Interpret our Python code for testing.'''
+        '''Interpret our Node.JS code for testing JSON.'''
         process = self._run([*self._node, '-e', code])
         self._validate(
             code=code,
@@ -818,6 +849,15 @@ languages = {
         flt=DataType(name='float64', bits=64, parse='ParseFloat', write='FormatFloat'),
         int=DataType(name='int64', bits=64, parse='ParseInt', write='FormatInt'),
         uint=DataType(name='uint64', bits=64, parse='ParseUint', write='FormatUint'),
+    ),
+    'ruby': Language(
+        name='ruby',
+        literal=read_string(lang / 'literal.rb'),
+        string=read_string(lang / 'string.rb'),
+        extension='.rb',
+        flt=DataType(name='Float', bits=64, parse='parse_float'),
+        int=DataType(name='Integer', bits=None, parse='parse_int'),
+        uint=None,
     ),
     'json': Language(
         name='json',

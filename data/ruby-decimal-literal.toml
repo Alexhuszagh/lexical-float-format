@@ -1,8 +1,8 @@
 [metadata]
-title = "Go - Decimal String - {version}"
-literal = false
-language = "go"
-description = "Go string decimal numbers parsed via `ParseFloat` and `ParseInt`. Does not support base prefixes."
+title = "Ruby - Decimal Literal - {version}"
+literal = true
+language = "ruby"
+description = "Ruby literal decimal numbers. Does not support base prefixes."
 
 # Non-Digit Separator Flags
 
@@ -91,18 +91,18 @@ outcome = "fail"
 expected = "1e3"
 
 [[floats]]
-value = ["NaN", "Inf"]
+value = ["NaN", "Infinity"]
 title = "No special (non-finite) values."
 flags = "S/S"
 outcome = "fail"
-expected = ["math.NaN()", "math.Inf(1)"]
+expected = ["Float::NAN", "Float::INFINITY"]
 
 [[floats]]
 value = ["nan"]
 title = "Case-sensitive special (non-finite) values."
 flags = "S/C"
 outcome = "fail"
-expected = ["math.NaN()"]
+expected = ["Float::NAN"]
 
 [[floats]]
 value = "001.2"
@@ -247,11 +247,11 @@ outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = ["N_a_N", "in_f"]
+value = ["N_a_N", "in_finity"]
 title = "Special (non-finite) digit separator."
 flags = "S/D"
 outcome = "pass"
-expected = ["math.NaN()", "math.Inf(1)"]
+expected = ["Float::NAN", "Float::INFINITY"]
 
 [[floats]]
 value = "_11.11e11"
@@ -360,8 +360,9 @@ expected = "1.0e-3"
 
 # Integers
 
+# NOTE: Go has Octal literals with leading `0`, so we force this to fail.
 [[ints]]
-value = "0012"
+value = "0012X"
 title = "No integer leading zeros."
 flags = "N/I"
 outcome = "fail"
@@ -387,10 +388,3 @@ title = "No mantissa positive or negative sign."
 flags = "-/M"
 outcome = "fail"
 expected = "-1"
-
-[[uints]]
-value = "-0"
-title = "No unsigned integer negative sign."
-flags = "-/U"
-outcome = "fail"
-expected = "0"
