@@ -1,8 +1,8 @@
 [metadata]
-title = "C++ - Decimal Literal - {version} - {lang}"
-literal = true
-language = "cpp"
-description = "C++ literal decimal numbers. Does not support base prefixes."
+title = "Go - Decimal String - {version}"
+literal = false
+language = "go"
+description = "Go string decimal numbers parsed via `ParseFloat` and `ParseInt`. Does not support base prefixes."
 
 # Non-Digit Separator Flags
 
@@ -95,14 +95,14 @@ value = ["NAN", "INFINITY"]
 title = "No special (non-finite) values."
 flags = "S/S"
 outcome = "fail"
-expected = ["NAN", "INFINITY"]
+expected = ["math.NaN()", "math.Inf(1)"]
 
 [[floats]]
 value = ["nan"]
 title = "Case-sensitive special (non-finite) values."
 flags = "S/C"
 outcome = "fail"
-expected = ["NAN"]
+expected = ["math.NaN()"]
 
 [[floats]]
 value = "001.2"
@@ -163,154 +163,154 @@ expected = "0"
 # Digit Separator Flags
 
 [[floats]]
-value = "1'1.11e11"
+value = "1_1.11e11"
 title = "Integer internal digit separator."
 flags = "I/I"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11.1'1e11"
+value = "11.1_1e11"
 title = "Fraction internal digit separator."
 flags = "F/I"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11.11e1'1"
+value = "11.11e1_1"
 title = "Exponent internal digit separator."
 flags = "E/I"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "-'11.11e11"
+value = "-_11.11e11"
 title = "Integer leading digit separator."
 flags = "I/L"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11.'11e11"
+value = "11._11e11"
 title = "Fraction leading digit separator."
 flags = "F/L"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11.11e'11"
+value = "11.11e_11"
 title = "Exponent leading digit separator."
 flags = "E/L"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11'.11e11"
+value = "11_.11e11"
 title = "Integer trailing digit separator."
 flags = "I/T"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11.11'e11"
+value = "11.11_e11"
 title = "Fraction trailing digit separator."
 flags = "F/T"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11.11e11'"
+value = "11.11e11_"
 title = "Exponent trailing digit separator."
 flags = "E/T"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "1''1.11e11"
+value = "1__1.11e11"
 title = "Integer consecutive digit separator."
 flags = "I/C"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11.1''1e11"
+value = "11.1__1e11"
 title = "Fraction consecutive digit separator."
 flags = "F/C"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11.11e1''1"
+value = "11.11e1__1"
 title = "Exponent consecutive digit separator."
 flags = "E/C"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = ["N'a'N", "in'finity"]
+value = ["N_a_N", "in_finity"]
 title = "Special (non-finite) digit separator."
 flags = "S/D"
 outcome = "pass"
-expected = ["NAN", "INFINITY"]
+expected = ["math.NaN()", "math.Inf(1)"]
 
 [[floats]]
-value = "'11.11e11"
+value = "_11.11e11"
 title = "Absolute start digit separator."
 flags = "s/D"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "'-11.11e11"
+value = "_-11.11e11"
 title = "Integer sign digit separator."
 flags = "I/s"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "''-11.11e11"
+value = "__-11.11e11"
 title = "Integer sign consecutive digit separator."
 flags = "I/c"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11.11e'-11"
+value = "11.11e_-11"
 title = "Exponent sign digit separator."
 flags = "E/s"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "11.11e''-11"
+value = "11.11e__-11"
 title = "Exponent sign consecutive digit separator."
 flags = "E/c"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "0'd11.11e11"
+value = "0_d11.11e11"
 title = "Base prefix internal digit separator."
 flags = "P/I"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "-'0d11.11e11"
+value = "-_0d11.11e11"
 title = "Base prefix leading digit separator."
 flags = "P/L"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "0d'11.11e11"
+value = "0d_11.11e11"
 title = "Base prefix trailing digit separator."
 flags = "P/T"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "0d''11.11e11"
+value = "0d__11.11e11"
 title = "Base prefix consecutive digit separator."
 flags = "P/C"
 outcome = "pass"
@@ -324,21 +324,21 @@ outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "011.11e11'd"
+value = "011.11e11_d"
 title = "Base suffix leading digit separator."
 flags = "S/L"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "011.11e11d'"
+value = "011.11e11d_"
 title = "Base suffix trailing digit separator."
 flags = "S/T"
 outcome = "pass"
 expected = "11.11e11"
 
 [[floats]]
-value = "011.11e11d''"
+value = "011.11e11d__"
 title = "Base suffix consecutive digit separator."
 flags = "S/C"
 outcome = "pass"
@@ -360,9 +360,8 @@ expected = "1.0e-3"
 
 # Integers
 
-# NOTE: C++ has Octal literals with leading `0`, so we force this to fail.
 [[ints]]
-value = "0012X"
+value = "0012"
 title = "No integer leading zeros."
 flags = "N/I"
 outcome = "fail"

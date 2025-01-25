@@ -5,9 +5,6 @@ language = "python"
 description = "Python literal binary numbers. Requires base prefixes. Does not suppport floats."
 base = 2
 
-# TODO: Need binary string
-# TODO: Need hex string
-
 # Non-Digit Separator Flags
 
 [[floats]]

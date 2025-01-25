@@ -362,7 +362,7 @@ expected = "1.0e-3"
 
 # NOTE: C has Octal literals with leading `0`, so we force this to fail.
 [[ints]]
-value = "0012X"
+value = "0012"
 title = "No integer leading zeros."
 flags = "N/I"
 outcome = "fail"

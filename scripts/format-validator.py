@@ -58,6 +58,34 @@ class Logger:
 
 
 @dataclass
+class DataType:
+    '''
+    A single data type for testing.
+
+    This is used for signed, unsigned, and floating-point numbers.
+    '''
+
+    # the type name.
+    name: str
+
+    # the size of the type, in bits, if applicable
+    bits: int | None = None
+
+    # the function to parse the value. defaults to the type name
+    parse: str = ''
+
+    # the function to write the value. defaults to the type name
+    write: str = ''
+
+    def __post_init__(self) -> None:
+        '''Apply defaults to parse and write.'''
+        if not self.parse:
+            self.parse = self.name
+        if not self.write:
+            self.write = self.name
+
+
+@dataclass
 class Language:
     '''Specification for a programming language or data interchange format.'''
 
@@ -65,9 +93,9 @@ class Language:
     literal: str | None
     string: str
     extension: str
-    floating: str | None
-    int: str | None
-    uint: str | None
+    flt: DataType | None
+    int: DataType | None
+    uint: DataType | None
     # Optional override for the language version
     langversion: str | None = None
     # Optional override for the command
@@ -166,19 +194,20 @@ class Language:
 
         path = self.write_code(code)
         output = path.parent / path.stem
-        result = self._run(cmd(path, output))
+        args = cmd(path, output)
+        result = self._run(args)
 
         # compile-time failure is a test itself for literals
         if result.returncode != 0:
             if not literal:
-                msg = f'Got an unexpected result compiling code "{code}" for language "{repr(self)}".'
+                msg = f'Got an error compiling code "{code}" for language "{repr(self)}" with args {args}.'
                 raise RuntimeError(msg)
             return result
 
         # if we have a mismatched value for our literals, then we have an issue
         result = self._run([str(output)])
         if result.returncode != 0 and literal:
-            msg = f'Got an unexpected result running code "{code}" for language "{repr(self)}".'
+            msg = f'Got an error running code "{code}" for language "{repr(self)}" with args {args}.'
             raise RuntimeError(msg)
 
         return result
@@ -321,7 +350,16 @@ class Language:
                 cmd.append(f'-std={self.langversion}')
             return cmd
 
-        return self._build_and_test(code, literal, to_cmd)
+        process = self._build_and_test(code, literal, to_cmd)
+        self._validate(
+            code=code,
+            literal=literal,
+            process=process,
+            literal_errors=('error:',),
+            parse_errors=('ParseError:',),
+            assertion_errors=('Assertion `',),
+        )
+        return process
 
     # C++
 
@@ -350,7 +388,48 @@ class Language:
                 cmd.append(f'-std={self.langversion}')
             return cmd
 
-        return self._build_and_test(code, literal, to_cmd)
+        process = self._build_and_test(code, literal, to_cmd)
+        self._validate(
+            code=code,
+            literal=literal,
+            process=process,
+            literal_errors=('error:',),
+            parse_errors=('ParseError:',),
+            assertion_errors=('Assertion `',),
+        )
+        return process
+
+    # RUST
+
+    @property
+    def _go(self) -> list[str]:
+        return self._get_or_fallbacks(default=['go'], envvars=['GO'])
+
+    @property
+    def _go_version(self) -> str:
+        output = self._getoutput([*self._go, 'version'])
+        return re.match(r'^.*?go(\d+\.\d+(?:\.\d+)?)', output).group(1)
+
+    def _go_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+        '''Run our Rust compilation build and test.'''
+
+        path = self.write_code(code)
+        process = self._run([*self._go, 'run', str(path)])
+        self._validate(
+            code=code,
+            literal=literal,
+            process=process,
+            literal_errors=(
+                'syntax error:',
+                'undefined:',
+                'exponent has no digits',
+                '\'_\' must',
+                'cannot use _',
+            ),
+            parse_errors=('ParseError:',),
+            assertion_errors=('AssertionError:',),
+        )
+        return process
 
     # NODE
 
@@ -460,13 +539,15 @@ class File:
 
         # run all our test cases
         for case in self.floats:
+            assert language.flt is not None
             result.append(case.run(
                 language=language,
                 literal=self.metadata.literal,
-                data_type=language.floating,
+                data_type=language.flt,
                 base=self.metadata.base,
             ))
         for case in self.ints:
+            assert language.int is not None
             result.append(case.run(
                 language=language,
                 literal=self.metadata.literal,
@@ -474,6 +555,7 @@ class File:
                 base=self.metadata.base,
             ))
         for case in self.uints:
+            assert language.uint is not None
             result.append(case.run(
                 language=language,
                 literal=self.metadata.literal,
@@ -538,7 +620,7 @@ class Case:
         self,
         language: Language,
         literal: bool,
-        data_type: str | None,
+        data_type: DataType,
         base: int = 10,
     ) -> str:
         '''Run a single test case for a given language.'''
@@ -558,7 +640,7 @@ class Case:
         self,
         language: Language,
         literal: bool,
-        data_type: str | None,
+        data_type: DataType,
         base: int = 10,
     ) -> bool:
         '''Test one or more values and return if the test passed.'''
@@ -578,14 +660,16 @@ class Case:
         value: str,
         expected: str,
         literal: bool,
-        data_type: str | None,
+        data_type: DataType,
         base: int = 10,
     ) -> bool:
         '''Run a test case for a single value.'''
 
         template = language.template(literal)
         code = template.format(
-            type=data_type,
+            type=data_type.name,
+            parse=data_type.parse,
+            bits=data_type.bits,
             value=value,
             base=base,
             expected=expected,
@@ -599,7 +683,7 @@ class Case:
         value: list[str],
         expected: list[str],
         literal: bool,
-        data_type: str | None,
+        data_type: DataType,
         base: int = 10,
     ) -> bool:
         '''Run a test case for multiple values.'''
@@ -684,52 +768,63 @@ languages = {
         literal=read_string(lang / 'literal.rs'),
         string=read_string(lang / 'string.rs'),
         extension='.rs',
-        floating='f64',
-        int='i64',
-        uint='u64',
+        flt=DataType(name='f64', bits=64),
+        int=DataType(name='i64', bits=64),
+        uint=DataType(name='u64', bits=64),
     ),
     'python': Language(
         name='python',
         literal=read_string(lang / 'literal.py'),
         string=read_string(lang / 'string.py'),
         extension='.py',
-        floating='float',
-        int='int',
-        uint='int',
+        flt=DataType(name='float', bits=64),
+        int=DataType(name='int', bits=None),
+        uint=None,
     ),
     'c': Language(
         name='c',
         literal=read_string(lang / 'literal.c'),
         string=read_string(lang / 'string.c'),
         extension='.c',
-        floating='f64',
-        int='i32',
-        uint='u32',
+        # NOTE: This was hacked up with enums but it works anyway.
+        flt=DataType(name='f64', bits=64),
+        int=DataType(name='i64', bits=64),
+        uint=DataType(name='u64', bits=64),
     ),
     'cpp': Language(
         name='cpp',
         literal=read_string(lang / 'literal.cpp'),
         string=read_string(lang / 'string.cpp'),
         extension='.cpp',
-        floating='f64',
-        int='i32',
-        uint='u32',
+        # NOTE: This was hacked up with enums but it works anyway.
+        flt=DataType(name='f64', bits=64),
+        int=DataType(name='i64', bits=64),
+        uint=DataType(name='u64', bits=64),
     ),
     'julia': Language(
         name='julia',
         literal=read_string(lang / 'literal.jl'),
         string=read_string(lang / 'string.jl'),
         extension='.jl',
-        floating='Float64',
-        int='Int32',
-        uint='UInt32',
+        flt=DataType(name='Float64', bits=64),
+        int=DataType(name='Int32', bits=32),
+        uint=DataType(name='UInt32', bits=32),
+    ),
+    'go': Language(
+        name='go',
+        literal=read_string(lang / 'literal.go'),
+        string=read_string(lang / 'string.go'),
+        extension='.go',
+        flt=DataType(name='float64', bits=64, parse='ParseFloat', write='FormatFloat'),
+        int=DataType(name='int64', bits=64, parse='ParseInt', write='FormatInt'),
+        uint=DataType(name='uint64', bits=64, parse='ParseUint', write='FormatUint'),
     ),
     'json': Language(
         name='json',
         literal=None,
         string=read_string(lang / 'json.js'),
         extension='.json',
-        floating=None,
+        flt=DataType(name='Number', bits=64),
         int=None,
         uint=None,
     ),
