@@ -105,6 +105,27 @@ outcome = "fail"
 expected = ["f64::INFINITY"]
 
 [[floats]]
+value = "NaN"
+title = "Has a representation of NaN."
+flags = "h/N"
+outcome = "pass"
+expected = "f64::NAN"
+
+[[floats]]
+value = "inf"
+title = "Has a representation of short infinity."
+flags = "h/S"
+outcome = "pass"
+expected = "f64::INFINITY"
+
+[[floats]]
+value = "Infinity"
+title = "Has a representation of long infinity."
+flags = "h/L"
+outcome = "pass"
+expected = "f64::INFINITY"
+
+[[floats]]
 value = "001.2"
 title = "No float leading zeros."
 flags = "N/F"

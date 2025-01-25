@@ -98,6 +98,27 @@ outcome = "fail"
 expected = ["float('inf')"]
 
 [[floats]]
+value = "NaN"
+title = "Has a representation of NaN."
+flags = "h/N"
+outcome = "pass"
+expected = "float('nan')"
+
+[[floats]]
+value = "inf"
+title = "Has a representation of short infinity."
+flags = "h/S"
+outcome = "pass"
+expected = "float('inf')"
+
+[[floats]]
+value = "Infinity"
+title = "Has a representation of long infinity."
+flags = "h/L"
+outcome = "pass"
+expected = "float('inf')"
+
+[[floats]]
 value = "001.2"
 title = "No float leading zeros."
 flags = "N/F"

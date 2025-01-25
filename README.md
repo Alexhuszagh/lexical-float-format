@@ -138,6 +138,9 @@ Test cases that might depend on the specific string representations of special n
 - `NaN` - no_special
 - `nan` - case_sensitive_special
 - `na_n` - special_digit_separator
+- `NaN` - NaN is supported
+- `Inf` - Short infinity representation is supported
+- `Infinity` - Long infinity representation is supported
 
 Test cases that might depend on radix support and more include:
 - base_prefix

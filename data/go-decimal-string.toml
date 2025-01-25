@@ -254,6 +254,27 @@ outcome = "pass"
 expected = ["math.NaN()", "math.Inf(1)"]
 
 [[floats]]
+value = "NaN"
+title = "Has a representation of NaN."
+flags = "h/N"
+outcome = "pass"
+expected = "math.NaN()"
+
+[[floats]]
+value = "inf"
+title = "Has a representation of short infinity."
+flags = "h/S"
+outcome = "pass"
+expected = "math.Inf(1)"
+
+[[floats]]
+value = "Infinity"
+title = "Has a representation of long infinity."
+flags = "h/L"
+outcome = "pass"
+expected = "math.Inf(1)"
+
+[[floats]]
 value = "_11.11e11"
 title = "Absolute start digit separator."
 flags = "s/D"
