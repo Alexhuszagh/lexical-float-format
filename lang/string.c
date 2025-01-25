@@ -1,36 +1,42 @@
 #include <assert.h>
+#include <math.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
 
 union number
 {{
-    int i32;
-    unsigned int u32;
+    int64_t i64;
+    uint64_t u64;
     double f64;
 }};
 
-int i32(const char* value) {{
+int64_t i64(const char* value) {{
     char* end;
-    int i = strtol(value, &end, {base});
+    long i = strtol(value, &end, {base});
     if (*end != 0) {{
-        assert(0);
+        printf("ParseError:\n");
+        exit(1);
     }}
-    return i;
+    return (int64_t)i;
 }}
 
-unsigned int u32(const char* value) {{
+uint64_t u64(const char* value) {{
     char* end;
-    unsigned int i = strtoul(value, &end, {base});
+    unsigned long i = strtoul(value, &end, {base});
     if (*end != 0) {{
-        assert(0);
+        printf("ParseError:\n");
+        exit(1);
     }}
-    return i;
+    return (uint64_t)i;
 }}
 
 double f64(const char *value) {{
     char* end;
     double f = strtod(value, &end);
     if (*end != 0) {{
-        assert(0);
+        printf("ParseError:\n");
+        exit(1);
     }}
     return f;
 }}

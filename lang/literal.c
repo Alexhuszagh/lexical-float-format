@@ -1,8 +1,9 @@
 #include <assert.h>
 #include <math.h>
+#include <stdint.h>
 
-typedef int i32;
-typedef unsigned int u32;
+typedef int64_t i64;
+typedef uint64_t u64;
 typedef double f64;
 
 int main() {{

@@ -102,7 +102,7 @@ value = ["nan"]
 title = "Case-sensitive special (non-finite) values."
 flags = "S/C"
 outcome = "fail"
-expected = "NAN"
+expected = ["NAN"]
 
 [[floats]]
 value = "001.2"
