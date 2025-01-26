@@ -104,51 +104,71 @@ The main test case is in [run.sh](/scripts/run.sh), but each individual test can
 ## Test Cases
 
 The main test cases are:
-- `.1` - required_integer_digits
-- `1.` - required_fraction_digits
-- `1.0e` - required_exponent_digits
-- `.` - required_mantissa_digits
-- `+1` - no_positive_mantissa_sign
-- `1` - required_mantissa_sign
-- `1.0e3` - no_exponent_notation
-- `1.0e+3` - no_positive_exponent_sign
-- `1.0e3` - required_exponent_sign
-- `1e3` - no_exponent_without_fraction
-- `1.e3` - required_integer_digits_with_exponent
-- `.1e3` - required_fraction_digits_with_exponent
-- `.e3` - required_mantissa_digits_with_exponent
-- `01` - no_integer_leading_zeros
-- `01.0` - no_float_leading_zeros
-- `1.0` - required_exponent_notation
-- `1.0E3` - case_sensitive_exponent
-- `1_1.11e11` - integer_internal_digit_separator
-- `11.1_1e11` - fraction_internal_digit_separator
-- `11.11e1_1` - exponent_internal_digit_separator
-- `_11.11e11` - integer_leading_digit_separator
-- `11._11e11` - fraction_leading_digit_separator
-- `11.11e_11` - exponent_leading_digit_separator
-- `11_.11e11` - integer_trailing_digit_separator
-- `11.11_e11` - fraction_trailing_digit_separator
-- `11.11e11_` - exponent_trailing_digit_separator
-- `1__1.11e11` - integer_consecutive_digit_separator
-- `11.1__1e11` - fraction_consecutive_digit_separator
-- `11.11e1__1` - exponent_consecutive_digit_separator
+1. `.1` - required_integer_digits
+2. `1.` - required_fraction_digits
+3. `1.0e` - required_exponent_digits
+4. `.` - required_mantissa_digits
+5. `+1` - no_positive_mantissa_sign
+6. `1` - required_mantissa_sign
+7. `1.0e3` - no_exponent_notation
+8. `1.0e+3` - no_positive_exponent_sign
+9. `1.0e3` - required_exponent_sign
+10. `1e3` - no_exponent_without_fraction
+11. `1.e3` - required_integer_digits_with_exponent
+12. `.1e3` - required_fraction_digits_with_exponent
+13. `.e3` - required_mantissa_digits_with_exponent
+14. `01` - no_integer_leading_zeros
+15. `01.0` - no_float_leading_zeros
+16. `1.0` - required_exponent_notation
+17. `1.0E3` - case_sensitive_exponent
+18. `1_1.11e11` - integer_internal_digit_separator
+19. `11.1_1e11` - fraction_internal_digit_separator
+20. `11.11e1_1` - exponent_internal_digit_separator
+21. `_11.11e11` - integer_leading_digit_separator
+22. `11._11e11` - fraction_leading_digit_separator
+23. `11.11e_11` - exponent_leading_digit_separator
+24. `11_.11e11` - integer_trailing_digit_separator
+25. `11.11_e11` - fraction_trailing_digit_separator
+26. `11.11e11_` - exponent_trailing_digit_separator
+27. `1__1.11e11` - integer_consecutive_digit_separator
+28. `11.1__1e11` - fraction_consecutive_digit_separator
+29. `11.11e1__1` - exponent_consecutive_digit_separator
+30. `_`, `_.1` - Digit separator with empty integer
+31. `__`, `__.1` - Consecutive digit separator with empty integer
+32. `1._` - Digit separator with empty fraction
+33. `1.__` - Consecutive digit separator with empty fraction
+34. `_._` - Digit separator with empty mantissa
+35. `__.__` -  Consecutive digit separator with empty mantissa
+36. `1.2e_` - Digit separator with empty exponent
+37. `1.2e__` - Consecutive digit separator with empty exponent
 
 Test cases that might depend on the specific string representations of special numbers include:
-- `NaN` - no_special
-- `nan` - case_sensitive_special
-- `na_n` - special_digit_separator
-- `NaN` - NaN is supported
-- `Inf` - Short infinity representation is supported
-- `Infinity` - Long infinity representation is supported
+38. `NaN` - no_special
+39. `nan` - case_sensitive_special
+40. `na_n` - special_digit_separator
+41. `na__n` - Consecutive special digit separator.
+42. `NaN` - NaN is supported
+43. `NaN` - Allows a positive sign before a representation of NaN.
+44. `NaN` - Allows a negative sign before a representation of NaN.
+45. `NaN` - Has a case-sensitive representation of NaN.
+46. `Inf` - Short infinity representation is supported.
+47. `Inf` - Allows a positive sign before a representation of short infinity.
+48. `Inf` - Allows a negative sign before a representation of short infinity.
+49. `Inf` - Has a case-sensitive representation of short infinity.
+50. `Infinity` - Long infinity representation is supported
+51. `Inf` - Allows a positive sign before a representation of long infinity.
+52. `Inf` - Allows a negative sign before a representation of long infinity.
+53. `Inf` - Has a case-sensitive representation of long infinity.
 
 Test cases that might depend on radix support and more include:
-- base_prefix
-- base_suffix
-- case_sensitive_base_prefix
-- case_sensitive_base_suffix
-- required_base_prefix
-- required_base_suffix
+54. Supports base prefixes
+55. Does not supports base prefixes
+56. case_sensitive_base_prefix
+57. required_base_prefix
+58. Supports base suffixes
+59. Does not supports base suffixes
+60. case_sensitive_base_suffix
+61. required_base_suffix
 
 ## Test Data Format
 

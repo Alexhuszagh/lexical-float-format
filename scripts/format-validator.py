@@ -20,6 +20,7 @@
     Or these can be specified in a config file.
 '''
 
+import typing
 import argparse
 import copy
 import itertools as it
@@ -39,6 +40,8 @@ home = Path(__file__).absolute().parent.parent
 temp = home / 'temp'
 lang = home / 'lang'
 verbose = False
+
+CompletedProcess: typing.TypeAlias = subprocess.CompletedProcess[str]
 
 
 @dataclass
@@ -110,7 +113,7 @@ class Language:
             raise ValueError(f'Cannot use literal values for interchange format "{self.name}".')
         return template
 
-    def build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+    def build(self, code: str, literal: bool) -> tuple[CompletedProcess, bool]:
         '''Build the code snippet, optionally running it, and returning the result.'''
 
         build = getattr(self, f'_{self.name}_build', None)
@@ -178,7 +181,7 @@ class Language:
         return result.stdout
 
     @staticmethod
-    def _run(cmd: list[str]) -> subprocess.CompletedProcess[str]:
+    def _run(cmd: list[str]) -> CompletedProcess:
         if verbose:
             print('Running: ' + ' '.join(cmd))
         result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='utf-8')
@@ -191,7 +194,7 @@ class Language:
         code: str,
         literal: bool,
         cmd: Callable[[Path, Path], list[str]],
-    ) -> subprocess.CompletedProcess[str]:
+    ) -> CompletedProcess:
         '''Compile and optionally run the compiled code.'''
 
         path = self.write_code(code)
@@ -216,13 +219,12 @@ class Language:
 
     def _validate(
         self,
-        code: str,
         literal: bool,
-        process: subprocess.CompletedProcess[str],
+        process: CompletedProcess,
         literal_errors: tuple[str, ...],
         parse_errors: tuple[str, ...],
         assertion_errors: tuple[str, ...],
-    ) -> None:
+    ) -> bool:
         '''Validate the completed results from our code.'''
 
         is_success = process.returncode == 0
@@ -235,9 +237,10 @@ class Language:
         else:
             errors = ()
         if not is_success and any(i in process.stdout for i in assertion_errors):
-            raise AssertionError(f'Values did not equal for code "{code}".')
+            return True
         if errors and not any(i in process.stdout for i in errors):
             raise ValueError(f'Got an unexpected response with error "{process.stdout}".')
+        return False
 
     # RUST
 
@@ -250,22 +253,21 @@ class Language:
         output = self._getoutput([*self._rustc, '--version'])
         return re.match(r'^rustc (\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _rust_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+    def _rust_build(self, code: str, literal: bool) -> tuple[CompletedProcess, bool]:
         '''Run our Rust compilation build and test.'''
 
         def to_cmd(input: Path, output: Path) -> str:
             return [*self._rustc, str(input), '-o', str(output)]
 
         process = self._build_and_test(code, literal, to_cmd)
-        self._validate(
-            code=code,
+        not_equal = self._validate(
             literal=literal,
             process=process,
             literal_errors=('error:',),
             parse_errors=('`Err`',),
             assertion_errors=('assertion `left == right` failed',),
         )
-        return process
+        return (process, not_equal)
 
     # PYTHON
 
@@ -282,19 +284,18 @@ class Language:
         output = self._getoutput([*self._python, '--version'])
         return re.match(r'^Python (\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _python_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+    def _python_build(self, code: str, literal: bool) -> tuple[CompletedProcess, bool]:
         '''Interpret our Python code for testing.'''
 
         process = self._run([*self._python, '-c', code])
-        self._validate(
-            code=code,
+        not_equal = self._validate(
             literal=literal,
             process=process,
             literal_errors=('SyntaxError:', 'NameError:'),
             parse_errors=('ValueError:',),
             assertion_errors=('AssertionError:',),
         )
-        return process
+        return (process, not_equal)
 
     # JULIA
 
@@ -311,19 +312,18 @@ class Language:
         output = self._getoutput([*self._julia, '--version'])
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _julia_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+    def _julia_build(self, code: str, literal: bool) -> tuple[CompletedProcess, bool]:
         '''Interpret our Julia code for testing.'''
 
         process = self._run([*self._julia, '-e', code])
-        self._validate(
-            code=code,
+        not_equal = self._validate(
             literal=literal,
             process=process,
             literal_errors=('ERROR: ParseError:', 'ERROR: UndefVarError:', 'ERROR: syntax:'),
             parse_errors=('ERROR: ArgumentError:',),
             assertion_errors=('ERROR: AssertionError:',),
         )
-        return process
+        return (process, not_equal)
 
     # RUBY
 
@@ -340,19 +340,18 @@ class Language:
         output = self._getoutput([*self._ruby, '--version'])
         return re.match(r'^ruby (\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _ruby_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+    def _ruby_build(self, code: str, literal: bool) -> tuple[CompletedProcess, bool]:
         '''Interpret our Ruby code for testing.'''
 
         process = self._run([*self._ruby, '-e', code])
-        self._validate(
-            code=code,
+        not_equal = self._validate(
             literal=literal,
             process=process,
             literal_errors=('(SyntaxError)', '(NameError)', '(NoMethodError)'),
             parse_errors=('(ArgumentError)',),
             assertion_errors=('(AssertionError)',),
         )
-        return process
+        return (process, not_equal)
 
     # C
 
@@ -372,7 +371,7 @@ class Language:
         output = self._getoutput([*cc, '--version'])
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _c_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+    def _c_build(self, code: str, literal: bool) -> tuple[CompletedProcess, bool]:
         '''Run our C compilation build and test.'''
 
         def to_cmd(input: Path, output: Path) -> str:
@@ -382,15 +381,14 @@ class Language:
             return cmd
 
         process = self._build_and_test(code, literal, to_cmd)
-        self._validate(
-            code=code,
+        not_equal = self._validate(
             literal=literal,
             process=process,
             literal_errors=('error:',),
             parse_errors=('ParseError:',),
             assertion_errors=('Assertion `',),
         )
-        return process
+        return (process, not_equal)
 
     # C++
 
@@ -410,7 +408,7 @@ class Language:
         output = self._getoutput([*cpp, '--version'])
         return re.match(r'^.*?(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _cpp_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+    def _cpp_build(self, code: str, literal: bool) -> tuple[CompletedProcess, bool]:
         '''Run our C++ compilation build and test.'''
 
         def to_cmd(input: Path, output: Path) -> str:
@@ -420,15 +418,14 @@ class Language:
             return cmd
 
         process = self._build_and_test(code, literal, to_cmd)
-        self._validate(
-            code=code,
+        not_equal = self._validate(
             literal=literal,
             process=process,
             literal_errors=('error:',),
             parse_errors=('ParseError:',),
             assertion_errors=('Assertion `',),
         )
-        return process
+        return (process, not_equal)
 
     # RUST
 
@@ -441,13 +438,12 @@ class Language:
         output = self._getoutput([*self._go, 'version'])
         return re.match(r'^.*?go(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _go_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+    def _go_build(self, code: str, literal: bool) -> tuple[CompletedProcess, bool]:
         '''Run our Go compilation build and test.'''
 
         path = self.write_code(code)
         process = self._run([*self._go, 'run', str(path)])
-        self._validate(
-            code=code,
+        not_equal = self._validate(
             literal=literal,
             process=process,
             literal_errors=(
@@ -460,7 +456,7 @@ class Language:
             parse_errors=('ParseError:',),
             assertion_errors=('AssertionError:',),
         )
-        return process
+        return (process, not_equal)
 
     # NODE
 
@@ -477,7 +473,7 @@ class Language:
         output = self._getoutput([*self._node, '--version'])
         return re.match(r'^v(\d+\.\d+(?:\.\d+)?)', output).group(1)
 
-    def _node_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+    def _node_build(self, code: str, literal: bool) -> tuple[CompletedProcess, bool]:
         '''Interpret our Node.JS code for testing.'''
         raise NotImplementedError('TODO')
 
@@ -488,18 +484,17 @@ class Language:
         # JSON has no version but is stable
         return "1.0"
 
-    def _json_build(self, code: str, literal: bool) -> subprocess.CompletedProcess[str]:
+    def _json_build(self, code: str, literal: bool) -> tuple[CompletedProcess, bool]:
         '''Interpret our Node.JS code for testing JSON.'''
         process = self._run([*self._node, '-e', code])
-        self._validate(
-            code=code,
+        not_equal = self._validate(
             literal=literal,
             process=process,
             literal_errors=(),
             parse_errors=('SyntaxError:',),
             assertion_errors=('[ERR_ASSERTION]:',),
         )
-        return process
+        return (process, not_equal)
 
 
 @dataclass
@@ -573,25 +568,22 @@ class File:
             assert language.flt is not None
             result.append(case.run(
                 language=language,
-                literal=self.metadata.literal,
                 data_type=language.flt,
-                base=self.metadata.base,
+                metadata=self.metadata,
             ))
         for case in self.ints:
             assert language.int is not None
             result.append(case.run(
                 language=language,
-                literal=self.metadata.literal,
                 data_type=language.int,
-                base=self.metadata.base,
+                metadata=self.metadata,
             ))
         for case in self.uints:
             assert language.uint is not None
             result.append(case.run(
                 language=language,
-                literal=self.metadata.literal,
                 data_type=language.uint,
-                base=self.metadata.base,
+                metadata=self.metadata,
             ))
 
         return '\n'.join(result)
@@ -609,7 +601,23 @@ class Metadata:
     literal: bool
     language: str
     description: str | None = None
-    base: int = 10
+    radix: int | None = None
+    mantissa_radix: int | None = None
+    exponent_base: int | None = None
+    exponent_radix: int | None = None
+
+    def __post_init__(self) -> None:
+        have_either = (self.radix is not None) ^ (self.mantissa_radix is not None)
+        if not have_either:
+            raise ValueError('Can only provide the radix or mantissa radix.')
+        if self.radix is not None:
+            self.mantissa_radix = self.radix
+            self.exponent_base = self.radix
+            self.exponent_radix = self.radix
+        if self.exponent_base is None:
+            self.exponent_base = self.mantissa_radix
+        if self.exponent_radix is None:
+            self.exponent_radix = self.mantissa_radix
 
     def get_language(self, command: str | None = None, langversion: str | None = None) -> Language:
         '''Get the language specification from the name.'''
@@ -633,11 +641,13 @@ class Case:
     flags: str
 
     def __post_init__(self):
-        if self.outcome not in ('pass', 'fail'):
-            raise ValueError('Outcome must be either "pass" or "fail".')
+        if self.outcome not in ('pass', 'fail', 'assert'):
+            raise ValueError('Outcome must be either "pass", "fail", or "assert".')
 
-    def succeeded(self, process: subprocess.CompletedProcess) -> bool:
+    def succeeded(self, process: subprocess.CompletedProcess, not_equal: bool) -> bool:
         '''Determine if the process completed successfully.'''
+        if self.outcome == 'assert':
+            return process.returncode != 0 and not_equal
         if self.outcome == 'pass':
             return process.returncode == 0
         return process.returncode != 0
@@ -647,42 +657,28 @@ class Case:
         '''Convert the success or failure to a checkmark.'''
         return '✅' if success else '❌'
 
-    def run(
-        self,
-        language: Language,
-        literal: bool,
-        data_type: DataType,
-        base: int = 10,
-    ) -> str:
+    def run(self, language: Language, data_type: DataType, metadata: 'Metadata') -> str:
         '''Run a single test case for a given language.'''
 
         success = self.test(
             language=language,
-            literal=literal,
             data_type=data_type,
-            base=base,
+            metadata=metadata,
         )
         check = self.checkmark(success)
         value = self.value if isinstance(self.value, str) else self.value[0]
 
         return f'| {self.flags} | {check} | {value} | {self.title} |'
 
-    def test(
-        self,
-        language: Language,
-        literal: bool,
-        data_type: DataType,
-        base: int = 10,
-    ) -> bool:
+    def test(self, language: Language, data_type: DataType, metadata: 'Metadata') -> bool:
         '''Test one or more values and return if the test passed.'''
         fn = self.test_one if isinstance(self.value, str) else self.test_many
         return fn(
             language=language,
             value=self.value,
             expected=self.expected,
-            literal=literal,
             data_type=data_type,
-            base=base,
+            metadata=metadata,
         )
 
     def test_one(
@@ -690,32 +686,32 @@ class Case:
         language: Language,
         value: str,
         expected: str,
-        literal: bool,
         data_type: DataType,
-        base: int = 10,
+        metadata: 'Metadata',
     ) -> bool:
         '''Run a test case for a single value.'''
 
-        template = language.template(literal)
+        template = language.template(metadata.literal)
         code = template.format(
             type=data_type.name,
             parse=data_type.parse,
             bits=data_type.bits,
             value=value,
-            base=base,
             expected=expected,
+            mantissa_radix=metadata.mantissa_radix,
+            exponent_base=metadata.exponent_base,
+            exponent_radix=metadata.exponent_radix,
         )
-        process = language.build(code, literal)
-        return self.succeeded(process)
+        process, not_equal = language.build(code, metadata.literal)
+        return self.succeeded(process, not_equal)
 
     def test_many(
         self,
         language: Language,
         value: list[str],
         expected: list[str],
-        literal: bool,
         data_type: DataType,
-        base: int = 10,
+        metadata: 'Metadata',
     ) -> bool:
         '''Run a test case for multiple values.'''
 
@@ -724,9 +720,8 @@ class Case:
                 language=language,
                 value=value[i],
                 expected=expected[i],
-                literal=literal,
                 data_type=data_type,
-                base=base,
+                metadata=metadata,
             )
             for i in range(len(value))
         ]
