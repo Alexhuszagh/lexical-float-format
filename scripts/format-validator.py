@@ -45,7 +45,7 @@ verbose = False
 class Logger:
     '''Custom logger that also logs to an output file.'''
 
-    output: str | None
+    output: os.PathLike | None
 
     def log(self, message: str) -> None:
         '''Log our data to stdout, and optionally to file with no escape sequences.'''
@@ -743,13 +743,13 @@ def main(argv: list[str] | None = None):
 
     parser = argparse.ArgumentParser(
         prog='format validator',
-        description='Number format validator for various programming languages.',
+        description='number format validator for various programming languages.',
     )
     parser.add_argument('-f', '--file', nargs='*', help='a list of files to process')
     parser.add_argument('-d', '--directory', nargs='*', help='a directory of files to process')
     parser.add_argument('-o', '--output', help='an optional path to write the data to file')
     parser.add_argument('-c', '--config', help='an optional config file to load')
-    parser.add_argument('-v', '--verbose', action='store_true')
+    parser.add_argument('-v', '--verbose', action='store_true', help='log verbose diagnostic output')
     parser.add_argument('-V', '--version', action='version', version=f'%(prog)s {__version__}')
     args = parser.parse_args(argv)
 
