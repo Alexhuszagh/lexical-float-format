@@ -232,7 +232,7 @@ class TomlFormat:
 
         if multiline == Line.MULTI:
             space = ' ' * (indent + 2)
-            start = '[\n'
+            start = f'[\n{space}'
             end = '\n' + ' ' * indent + ']'
             return start + f',\n{space}'.join(data) + end
 
@@ -614,6 +614,54 @@ cases: dict[int, Case] = {
         flags='c/L',
         outcome='fail',
     ),
+    54: Case(
+        index=54,
+        title='Supports base prefixes.',
+        flags='s/P',
+        outcome='pass',
+    ),
+    55: Case(
+        index=55,
+        title='Does not support base prefixes.',
+        flags='n/P',
+        outcome='fail',
+    ),
+    56: Case(
+        index=56,
+        title='Case-sensitive base prefix.',
+        flags='e/P',
+        outcome='fail',
+    ),
+    57: Case(
+        index=57,
+        title='Require base prefixes.',
+        flags='r/P',
+        outcome='fail',
+    ),
+    58: Case(
+        index=58,
+        title='Supports base suffixes.',
+        flags='s/S',
+        outcome='pass',
+    ),
+    59: Case(
+        index=59,
+        title='Does not support base suffixes.',
+        flags='n/S',
+        outcome='fail',
+    ),
+    60: Case(
+        index=60,
+        title='Case-sensitive base suffix.',
+        flags='e/S',
+        outcome='fail',
+    ),
+    61: Case(
+        index=61,
+        title='Require base suffixes.',
+        flags='r/S',
+        outcome='fail',
+    ),
     # TODO: Many more here
 }
 
@@ -644,7 +692,10 @@ class Sign(enum.Enum):
 class Generator:
     '''A test-case generator'''
 
+    # the logger that writes the tests to file
     logger: Logger
+
+    # the metadata for the generator
     title: str
     literal: bool
     language: str
@@ -660,7 +711,13 @@ class Generator:
     base_suffix: str | None = None
     mantissa_sign: Sign = Sign.OPTIONAL
     exponent_sign: Sign = Sign.OPTIONAL
-    # this is for the literal values
+    nan_string: str = 'NaN'
+    nan_expr: str | None = None
+    inf_string: str = 'inf'
+    inf_expr: str | None = None
+    infinity_string: str = 'Infinity'
+    infinity_expr: str | None = None
+    # this is for the literal values to avoid comparing to exp notation
     no_exponent: bool = False
     no_floats: bool = False
     no_ints: bool = False
@@ -726,7 +783,7 @@ class Generator:
 
     def to_int_expected(self, value: int, sign: Sign | None = None) -> str:
         '''Returns the decimal literal value for the expected value.'''
-        sign = sign or self.mantissa_sign
+        sign = self.mantissa_sign if sign is None else sign
         digits = str(abs(value))
         return sign.sign(value < 0) + digits
 
@@ -739,8 +796,8 @@ class Generator:
         is_negative: bool = False,
     ) -> str:
         sign = self.mantissa_sign.sign(is_negative) if sign is None else sign
-        prefix = prefix or self.get_base_prefix()
-        suffix = suffix or self.get_base_suffix()
+        prefix = self.get_base_prefix() if prefix is None else prefix
+        suffix = self.get_base_suffix() if suffix is None else suffix
         return f'{sign}{prefix}{value}{suffix}'
 
     def to_int_actual(
@@ -1038,7 +1095,6 @@ class Generator:
         if sep is None:
             return
         if not self.no_ints:
-            # TODO: Fix he digit separator character
             pos = self.to_int_expected(radix + 1)
             neg = self.to_int_expected(-radix - 1, sign=Sign.OPTIONAL)
             has_prefix = self.base_prefix is not None
@@ -1322,6 +1378,240 @@ class Generator:
                 index=37,
             )
 
+    def print_specials(self) -> None:
+        '''Print the test cases for various special character support.'''
+
+        def case_permutations(s: str, n: int) -> list[str]:
+            return [s[:i] + swap_case(s[i]) + s[i + 1:] for i in range(n)]
+
+        def sep_permutations(s: str, n: int, c: int = 1) -> list[str]:
+            sep = self.digit_separator
+            return [s[:i] + sep * c + s[i:] for i in range(1, n + 1)]
+
+        # NOTE: all specials do not support base prefixes/suffixes, etc.
+        if self.no_floats:
+            return
+
+        # generic special
+        nan_expr = self.nan_expr or self.nan_string
+        inf_expr = self.inf_expr or self.inf_string
+        infinity_expr = self.infinity_expr or self.infinity_string
+        self.print_case(
+            header='floats',
+            actual=self.nan_string,
+            expected=nan_expr,
+            index=38,
+        )
+        self.print_case(
+            header='floats',
+            actual=case_permutations(self.nan_string, 2),
+            expected=[nan_expr] * 2,
+            index=39,
+        )
+        self.print_case(
+            header='floats',
+            actual=sep_permutations(self.nan_string, 3),
+            expected=[nan_expr] * 3,
+            index=40,
+        )
+        self.print_case(
+            header='floats',
+            actual=sep_permutations(self.nan_string, 3, 2),
+            expected=[nan_expr] * 3,
+            index=41,
+        )
+
+        # NaN
+        self.print_case(
+            header='floats',
+            actual=self.nan_string,
+            expected=nan_expr,
+            index=42,
+        )
+        self.print_case(
+            header='floats',
+            actual='+' + self.nan_string,
+            expected=nan_expr,
+            index=43,
+        )
+        self.print_case(
+            header='floats',
+            actual='-' + self.nan_string,
+            expected=nan_expr,
+            index=44,
+        )
+        self.print_case(
+            header='floats',
+            actual=case_permutations(self.nan_string, 3),
+            expected=[nan_expr] * 3,
+            index=45,
+        )
+
+        # short infinity
+        self.print_case(
+            header='floats',
+            actual=self.inf_string,
+            expected=inf_expr,
+            index=46,
+        )
+        self.print_case(
+            header='floats',
+            actual='+' + self.inf_string,
+            expected=inf_expr,
+            index=47,
+        )
+        self.print_case(
+            header='floats',
+            actual='-' + self.inf_string,
+            expected='-' + inf_expr,
+            index=48,
+        )
+        self.print_case(
+            header='floats',
+            actual=case_permutations(self.inf_string, 3),
+            expected=[inf_expr] * 3,
+            index=49,
+        )
+
+        # short infinity
+        self.print_case(
+            header='floats',
+            actual=self.infinity_string,
+            expected=infinity_expr,
+            index=50,
+        )
+        self.print_case(
+            header='floats',
+            actual='+' + self.infinity_string,
+            expected=infinity_expr,
+            index=41,
+        )
+        self.print_case(
+            header='floats',
+            actual='-' + self.infinity_string,
+            expected='-' + infinity_expr,
+            index=52,
+        )
+        self.print_case(
+            header='floats',
+            actual=case_permutations(self.infinity_string, 3),
+            expected=[infinity_expr] * 3,
+            index=53,
+        )
+
+    def print_bases(self) -> None:
+        '''Print the test cases for base prefix/suffix support.'''
+
+        base_prefix = self.get_base_prefix() or '0d'
+        base_suffix = self.get_base_suffix() or 'd'
+        swap_prefix = '0' + swap_case(base_prefix[1])
+        swap_suffix = swap_case(base_suffix)
+        radix = self.mantissa_radix
+        if not self.no_ints:
+            self.print_case(
+                header='ints',
+                actual=self.to_int_actual('11', prefix=base_prefix),
+                expected=self.to_int_expected(radix + 1),
+                index=54,
+            )
+            self.print_case(
+                header='ints',
+                actual=self.to_int_actual('11', prefix=base_prefix),
+                expected=self.to_int_expected(radix + 1),
+                index=55,
+            )
+            self.print_case(
+                header='ints',
+                actual=self.to_int_actual('11', prefix=swap_prefix),
+                expected=self.to_int_expected(radix + 1),
+                index=56,
+            )
+            self.print_case(
+                header='ints',
+                actual=self.to_int_actual('11', prefix=''),
+                expected=self.to_int_expected(radix + 1),
+                index=57,
+            )
+            self.print_case(
+                header='ints',
+                actual=self.to_int_actual('11', suffix=base_suffix),
+                expected=self.to_int_expected(radix + 1),
+                index=58,
+            )
+            self.print_case(
+                header='ints',
+                actual=self.to_int_actual('11', suffix=base_suffix),
+                expected=self.to_int_expected(radix + 1),
+                index=59,
+            )
+            self.print_case(
+                header='ints',
+                actual=self.to_int_actual('11', suffix=swap_suffix),
+                expected=self.to_int_expected(radix + 1),
+                index=60,
+            )
+            self.print_case(
+                header='ints',
+                actual=self.to_int_actual('11', suffix=''),
+                expected=self.to_int_expected(radix + 1),
+                index=61,
+            )
+
+        if not self.no_floats:
+            dot = self.decimal_point
+            self.print_case(
+                header='floats',
+                actual=self.to_actual(f'11{dot}11', prefix=base_prefix),
+                expected=self.to_decimal(radix + 1, radix + 1, digits=2),
+                index=54,
+            )
+            self.print_case(
+                header='floats',
+                actual=self.to_actual(f'11{dot}11', prefix=base_prefix),
+                expected=self.to_decimal(radix + 1, radix + 1, digits=2),
+                index=55,
+            )
+            self.print_case(
+                header='floats',
+                actual=self.to_actual(f'11{dot}11', prefix=swap_prefix),
+                expected=self.to_decimal(radix + 1, radix + 1, digits=2),
+                index=56,
+            )
+            self.print_case(
+                header='floats',
+                actual=self.to_actual(f'11{dot}11', prefix=''),
+                expected=self.to_decimal(radix + 1, radix + 1, digits=2),
+                index=57,
+            )
+            self.print_case(
+                header='floats',
+                actual=self.to_actual(f'11{dot}11', suffix=base_suffix),
+                expected=self.to_decimal(radix + 1, radix + 1, digits=2),
+                index=58,
+            )
+            self.print_case(
+                header='floats',
+                actual=self.to_actual(f'11{dot}11', suffix=base_suffix),
+                expected=self.to_decimal(radix + 1, radix + 1, digits=2),
+                index=59,
+            )
+            self.print_case(
+                header='floats',
+                actual=self.to_actual(f'11{dot}11', suffix=swap_suffix),
+                expected=self.to_decimal(radix + 1, radix + 1, digits=2),
+                index=60,
+            )
+            self.print_case(
+                header='floats',
+                actual=self.to_actual(f'11{dot}11', suffix=''),
+                expected=self.to_decimal(radix + 1, radix + 1, digits=2),
+                index=61,
+            )
+
+    def print_base_digit_separators(self) -> None:
+        '''Print the test cases for base prefix/suffix digit separator support.'''
+        raise NotImplementedError('TODO')
+
     def print(self) -> None:
         '''Print the generated test cases to file.'''
 
@@ -1334,7 +1624,9 @@ class Generator:
         self.print_leading_zeros()
         self.print_digit_separators()
         self.print_empty_digit_separators()
-        # TODO: More here
+        self.print_specials()
+        self.print_bases()
+        self.print_base_digit_separators()
 
 
 def create_from_config() -> None:
@@ -1397,7 +1689,6 @@ def main(argv: list[str] | None = None):
         required=True,
         help='the description to display under the title',
     )
-    # TODO: Need NaN, Inf, Infinity strings
     lang_parser.add_argument(
         '-r',
         '--radix',
@@ -1445,6 +1736,33 @@ def main(argv: list[str] | None = None):
         help='a character to signify the base at the end, such as "h" in `1fd2h`',
     )
     lang_parser.add_argument(
+        '--nan-string',
+        default='NaN',
+        help='the representation of NaN (as a literal or string), such as "NaN".',
+    )
+    lang_parser.add_argument(
+        '--nan-expr',
+        help='the expression that evaluates to NaN, such as `float("nan")`.',
+    )
+    lang_parser.add_argument(
+        '--inf-string',
+        default='inf',
+        help='the representation of short infinity (as a literal or string), such as "Inf".',
+    )
+    lang_parser.add_argument(
+        '--inf-expr',
+        help='the short expression that evaluates to infinity, such as `float("inf")`.',
+    )
+    lang_parser.add_argument(
+        '--infinity-string',
+        default='Infinity',
+        help='the representation of long infinity (as a literal or string), such as "Infinity".',
+    )
+    lang_parser.add_argument(
+        '--infinity-expr',
+        help='the long expression that evaluates to infinity, such as `float("infinity")`.',
+    )
+    lang_parser.add_argument(
         '--no-exponent',
         action='store_true',
         help='if the literal, validation cases do not support exponents.',
@@ -1464,10 +1782,6 @@ def main(argv: list[str] | None = None):
         action='store_true',
         help='if the format does not support unsigned integers.',
     )
-    # TODO: Need digit separator, has floats, etc.
-    # TODO: Going to need if it requires + signs or disallows them
-    #   This will be required for our expected results
-    #   Will also need to check for leading octals
 
     parser.add_argument(
         '-V',
@@ -1491,7 +1805,6 @@ def main(argv: list[str] | None = None):
                 Path(args.output).unlink(missing_ok=True)
             logger = Logger(args.output, args.quiet)
             generator = Generator(
-                # TODO: Need more fields
                 logger=logger,
                 title=args.title,
                 literal=args.literal,
@@ -1504,6 +1817,12 @@ def main(argv: list[str] | None = None):
                 exponent_radix=args.exponent_radix,
                 decimal_point=args.decimal_point,
                 exponent_char=args.exponent_char,
+                nan_string=args.nan_string,
+                nan_expr=args.nan_expr,
+                inf_string=args.inf_string,
+                inf_expr=args.inf_expr,
+                infinity_string=args.infinity_string,
+                infinity_expr=args.infinity_expr,
                 no_exponent=args.no_exponent,
                 no_floats=args.no_floats,
                 no_ints=args.no_ints,
