@@ -122,53 +122,77 @@ The main test cases are:
 16. `1.0` - required_exponent_notation
 17. `1.0E3` - case_sensitive_exponent
 18. `1_1.11e11` - integer_internal_digit_separator
-19. `11.1_1e11` - fraction_internal_digit_separator
-20. `11.11e1_1` - exponent_internal_digit_separator
-21. `_11.11e11` - integer_leading_digit_separator
-22. `11._11e11` - fraction_leading_digit_separator
-23. `11.11e_11` - exponent_leading_digit_separator
-24. `11_.11e11` - integer_trailing_digit_separator
-25. `11.11_e11` - fraction_trailing_digit_separator
-26. `11.11e11_` - exponent_trailing_digit_separator
-27. `1__1.11e11` - integer_consecutive_digit_separator
-28. `11.1__1e11` - fraction_consecutive_digit_separator
-29. `11.11e1__1` - exponent_consecutive_digit_separator
-30. `_`, `_.1` - Digit separator with empty integer
-31. `__`, `__.1` - Consecutive digit separator with empty integer
-32. `1._` - Digit separator with empty fraction
-33. `1.__` - Consecutive digit separator with empty fraction
-34. `_._` - Digit separator with empty mantissa
-35. `__.__` -  Consecutive digit separator with empty mantissa
-36. `1.2e_` - Digit separator with empty exponent
-37. `1.2e__` - Consecutive digit separator with empty exponent
+19. `1_1.11e11` - mantissa_internal_digit_separator (TODO: Add the flag name)
+20. `11.1_1e11` - fraction_internal_digit_separator
+21. `11.11e1_1` - exponent_internal_digit_separator
+22. `_11.11e11` - integer_leading_digit_separator
+23. `_11.11e11` - mantissa_leading_digit_separator (TODO: Add the flag name)
+24. `11._11e11` - fraction_leading_digit_separator
+25. `11.11e_11` - exponent_leading_digit_separator
+26. `11_.11e11` - integer_trailing_digit_separator
+27. `11_.11e11` - mantissa_trailing_digit_separator (TODO: Add the flag name)
+28. `11.11_e11` - fraction_trailing_digit_separator
+29. `11.11e11_` - exponent_trailing_digit_separator
+30. `1__1.11e11` - integer_consecutive_digit_separator
+31. `1__1.11e11` - mantissa_consecutive_digit_separator (TODO: Add the flag name)
+32. `11.1__1e11` - fraction_consecutive_digit_separator
+33. `11.11e1__1` - exponent_consecutive_digit_separator
+34. `_`, `_.1` - Digit separator with empty integer
+35. `__`, `__.1` - Consecutive digit separator with empty integer
+36. `1._` - Digit separator with empty fraction
+37. `1.__` - Consecutive digit separator with empty fraction
+38. `_._` - Digit separator with empty mantissa
+39. `__.__` -  Consecutive digit separator with empty mantissa
+40. `1.2e_` - Digit separator with empty exponent
+41. `1.2e__` - Consecutive digit separator with empty exponent
 
 Test cases that might depend on the specific string representations of special numbers include:
-38. `NaN` - no_special
-39. `nan` - case_sensitive_special
-40. `na_n` - special_digit_separator
-41. `na__n` - Consecutive special digit separator.
-42. `NaN` - NaN is supported
-43. `NaN` - Allows a positive sign before a representation of NaN.
-44. `NaN` - Allows a negative sign before a representation of NaN.
-45. `NaN` - Has a case-sensitive representation of NaN.
-46. `Inf` - Short infinity representation is supported.
-47. `Inf` - Allows a positive sign before a representation of short infinity.
-48. `Inf` - Allows a negative sign before a representation of short infinity.
-49. `Inf` - Has a case-sensitive representation of short infinity.
-50. `Infinity` - Long infinity representation is supported
-51. `Inf` - Allows a positive sign before a representation of long infinity.
-52. `Inf` - Allows a negative sign before a representation of long infinity.
-53. `Inf` - Has a case-sensitive representation of long infinity.
+42. `NaN` - no_special
+43. `nan` - case_sensitive_special
+44. `na_n` - special_digit_separator
+45. `na__n` - Consecutive special digit separator. (TODO: Change to have flag name)
+46. `NaN` - NaN is supported (TODO: Change to have flag name)
+47. `++NaN` - Allows a positive sign before a representation of NaN. (TODO: Change to have flag name)
+48. `-NaN` - Allows a negative sign before a representation of NaN. (TODO: Change to have flag name)
+49. `NaN` - Has a case-sensitive representation of NaN. (TODO: Change to have flag name)
+50. `Inf` - Short infinity representation is supported. (TODO: Change to have flag name)
+51. `+Inf` - Allows a positive sign before a representation of short infinity. (TODO: Change to have flag name)
+52. `-Inf` - Allows a negative sign before a representation of short infinity. (TODO: Change to have flag name)
+53. `Inf` - Has a case-sensitive representation of short infinity. (TODO: Change to have flag name)
+54. `Infinity` - Long infinity representation is supported (TODO: Change to have flag name)
+55. `+Infinity` - Allows a positive sign before a representation of long infinity. (TODO: Change to have flag name)
+56. `-Infinity` - Allows a negative sign before a representation of long infinity. (TODO: Change to have flag name)
+57. `Infinity` - Has a case-sensitive representation of long infinity. (TODO: Change to have flag name)
 
 Test cases that might depend on radix support and more include:
-54. Supports base prefixes
-55. Does not supports base prefixes
-56. case_sensitive_base_prefix
-57. required_base_prefix
-58. Supports base suffixes
-59. Does not supports base suffixes
-60. case_sensitive_base_suffix
-61. required_base_suffix
+58. `0x1` - Supports base prefixes (TODO: Change to have flag name)
+59. `0x1` - Does not support base prefixes (TODO: Change to have flag name)
+60. `0X1` - case_sensitive_base_prefix
+61. `1` - required_base_prefix
+62. `1h` - Supports base suffixes (TODO: Change to have flag name)
+63. `1h` - Does not supports base suffixes (TODO: Change to have flag name)
+64. `1H` - case_sensitive_base_suffix
+65. `1` - required_base_suffix
+66. `-0_x1` - base_prefix_internal_digit_separator
+67. `-_0x1` - base_prefix_leading_digit_separator
+68. `-0x_1` - base_prefix_trailing_digit_separator (overlaps with leading integer/mantissa digit separator)
+69. `0x__1` - base_prefix_consecutive_digit_separator
+70. `1h` - base_suffix_internal_digit_separator (can never occur, future-proofing)
+71. `1_h` - base_suffix_leading_digit_separator (overlaps with trailing integer/mantissa/exponent digit separator)
+72. `1h_` - base_suffix_trailing_digit_separator
+73. `1h__` - base_suffix_consecutive_digit_separator
+
+Additional format feature test cases:
+74. `-0`: no_unsigned_negative_sign
+75. `-0.0`: no_mantissa_negative_sign
+76. `-0`: no_exponent_negative_sign
+77. `_1`: start_digit_separator
+78. `_+1`: integer_sign_digit_separator
+79. `__+1`: integer_consecutive_sign_digit_separator
+80. `_+1`: mantissa_sign_digit_separator (TODO: Change to have flag name)
+81. `__+1`: mantissa_consecutive_sign_digit_separator (TODO: Change to have flag name)
+82. `1.0e_+1`: exponent_sign_digit_separator
+83. `1.0e__+1`: exponent_consecutive_sign_digit_separator
 
 ## Test Data Format
 

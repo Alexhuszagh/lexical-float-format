@@ -406,260 +406,296 @@ cases: dict[int, Case] = {
     ),
     19: Case(
         index=19,
-        title='Fraction internal digit separator.',
-        flags='F/I',
+        title='Mantissa internal digit separator.',
+        flags='M/I',
         outcome='pass',
     ),
     20: Case(
         index=20,
-        title='Exponent internal digit separator.',
-        flags='E/I',
+        title='Fraction internal digit separator.',
+        flags='F/I',
         outcome='pass',
     ),
     21: Case(
         index=21,
-        title='Integer leading digit separator.',
-        flags='I/L',
+        title='Exponent internal digit separator.',
+        flags='E/I',
         outcome='pass',
     ),
     22: Case(
         index=22,
-        title='Fraction leading digit separator.',
-        flags='F/L',
+        title='Integer leading digit separator.',
+        flags='I/L',
         outcome='pass',
     ),
     23: Case(
         index=23,
-        title='Exponent leading digit separator.',
-        flags='E/L',
+        title='Mantissa leading digit separator.',
+        flags='M/L',
         outcome='pass',
     ),
     24: Case(
         index=24,
-        title='Integer trailing digit separator.',
-        flags='I/T',
+        title='Fraction leading digit separator.',
+        flags='F/L',
         outcome='pass',
     ),
     25: Case(
         index=25,
-        title='Fraction trailing digit separator.',
-        flags='F/T',
+        title='Exponent leading digit separator.',
+        flags='E/L',
         outcome='pass',
     ),
     26: Case(
         index=26,
-        title='Exponent trailing digit separator.',
-        flags='E/T',
+        title='Integer trailing digit separator.',
+        flags='I/T',
         outcome='pass',
     ),
     27: Case(
         index=27,
-        title='Integer consecutive digit separator.',
-        flags='I/C',
+        title='Mantissa trailing digit separator.',
+        flags='M/T',
         outcome='pass',
     ),
     28: Case(
         index=28,
-        title='Fraction consecutive digit separator.',
-        flags='F/C',
+        title='Fraction trailing digit separator.',
+        flags='F/T',
         outcome='pass',
     ),
     29: Case(
         index=29,
-        title='Exponent consecutive digit separator.',
-        flags='E/C',
+        title='Exponent trailing digit separator.',
+        flags='E/T',
         outcome='pass',
     ),
     30: Case(
         index=30,
-        title='Digit separator with empty integer.',
-        flags='_/I',
+        title='Integer consecutive digit separator.',
+        flags='I/C',
         outcome='pass',
     ),
     31: Case(
         index=31,
-        title='Consecutive digit separator with empty integer.',
-        flags='\'/I',
+        title='Mantissa consecutive digit separator.',
+        flags='M/C',
         outcome='pass',
     ),
     32: Case(
         index=32,
-        title='Digit separator with empty fraction.',
-        flags='_/F',
+        title='Fraction consecutive digit separator.',
+        flags='F/C',
         outcome='pass',
     ),
     33: Case(
         index=33,
-        title='Consecutive digit separator with empty fraction.',
-        flags='\'/F',
+        title='Exponent consecutive digit separator.',
+        flags='E/C',
         outcome='pass',
     ),
     34: Case(
         index=34,
-        title='Digit separator with empty mantissa.',
-        flags='_/M',
+        title='Digit separator with empty integer.',
+        flags='_/I',
         outcome='pass',
     ),
     35: Case(
         index=35,
-        title='Consecutive digit separator with empty mantissa.',
-        flags='\'/M',
+        title='Consecutive digit separator with empty integer.',
+        flags='\'/I',
         outcome='pass',
     ),
     36: Case(
         index=36,
-        title='Digit separator with empty exponent.',
-        flags='_/E',
+        title='Digit separator with empty fraction.',
+        flags='_/F',
         outcome='pass',
     ),
     37: Case(
         index=37,
-        title='Consecutive digit separator with empty exponent.',
-        flags='\'/E',
+        title='Consecutive digit separator with empty fraction.',
+        flags='\'/F',
         outcome='pass',
     ),
     38: Case(
         index=38,
-        title='No special (non-finite) values.',
-        flags='S/S',
-        outcome='fail',
+        title='Digit separator with empty mantissa.',
+        flags='_/M',
+        outcome='pass',
     ),
     39: Case(
         index=39,
-        title='Case-sensitive special (non-finite) values.',
-        flags='S/c',
-        outcome='fail',
+        title='Consecutive digit separator with empty mantissa.',
+        flags='\'/M',
+        outcome='pass',
     ),
     40: Case(
         index=40,
-        title='Special (non-finite) digit separator.',
-        flags='S/_',
+        title='Digit separator with empty exponent.',
+        flags='_/E',
         outcome='pass',
     ),
     41: Case(
         index=41,
-        title='Consecutive special digit separator.',
-        flags='S/C',
+        title='Consecutive digit separator with empty exponent.',
+        flags='\'/E',
         outcome='pass',
     ),
     42: Case(
         index=42,
-        title='Has a representation of NaN.',
-        flags='h/N',
-        outcome='pass',
+        title='No special (non-finite) values.',
+        flags='S/S',
+        outcome='fail',
     ),
     43: Case(
         index=43,
-        title='Allows a positive sign before a representation of NaN.',
-        flags='+/N',
-        outcome='pass',
+        title='Case-sensitive special (non-finite) values.',
+        flags='S/c',
+        outcome='fail',
     ),
     44: Case(
         index=44,
-        title='Allows a negative sign before a representation of NaN.',
-        flags='-/N',
+        title='Special (non-finite) digit separator.',
+        flags='S/_',
         outcome='pass',
     ),
     45: Case(
         index=45,
-        title='Has a case-sensitive representation of NaN.',
-        flags='c/N',
-        outcome='fail',
+        title='Consecutive special digit separator.',
+        flags='S/C',
+        outcome='pass',
     ),
     46: Case(
         index=46,
-        title='Has a representation of short infinity.',
-        flags='h/S',
+        title='Has a representation of NaN.',
+        flags='h/N',
         outcome='pass',
     ),
     47: Case(
         index=47,
-        title='Allows a positive sign before a representation of short infinity.',
-        flags='+/S',
+        title='Allows a positive sign before a representation of NaN.',
+        flags='+/N',
         outcome='pass',
     ),
     48: Case(
         index=48,
-        title='Allows a negative sign before a representation of short infinity.',
-        flags='-/S',
+        title='Allows a negative sign before a representation of NaN.',
+        flags='-/N',
         outcome='pass',
     ),
     49: Case(
         index=49,
-        title='Has a case-sensitive representation of short infinity.',
-        flags='c/S',
+        title='Has a case-sensitive representation of NaN.',
+        flags='c/N',
         outcome='fail',
     ),
     50: Case(
         index=50,
-        title='Has a representation of long infinity.',
-        flags='h/L',
+        title='Has a representation of short infinity.',
+        flags='h/S',
         outcome='pass',
     ),
     51: Case(
         index=51,
-        title='Allows a positive sign before a representation of long infinity.',
-        flags='+/L',
+        title='Allows a positive sign before a representation of short infinity.',
+        flags='+/S',
         outcome='pass',
     ),
     52: Case(
         index=52,
-        title='Allows a negative sign before a representation of long infinity.',
-        flags='-/L',
+        title='Allows a negative sign before a representation of short infinity.',
+        flags='-/S',
         outcome='pass',
     ),
     53: Case(
         index=53,
-        title='Has a case-sensitive representation of long infinity.',
-        flags='c/L',
+        title='Has a case-sensitive representation of short infinity.',
+        flags='c/S',
         outcome='fail',
     ),
     54: Case(
         index=54,
-        title='Supports base prefixes.',
-        flags='s/P',
+        title='Has a representation of long infinity.',
+        flags='h/L',
         outcome='pass',
     ),
     55: Case(
         index=55,
-        title='Does not support base prefixes.',
-        flags='n/P',
-        outcome='fail',
+        title='Allows a positive sign before a representation of long infinity.',
+        flags='+/L',
+        outcome='pass',
     ),
     56: Case(
         index=56,
-        title='Case-sensitive base prefix.',
-        flags='e/P',
-        outcome='fail',
+        title='Allows a negative sign before a representation of long infinity.',
+        flags='-/L',
+        outcome='pass',
     ),
     57: Case(
         index=57,
-        title='Require base prefixes.',
-        flags='r/P',
+        title='Has a case-sensitive representation of long infinity.',
+        flags='c/L',
         outcome='fail',
     ),
     58: Case(
         index=58,
-        title='Supports base suffixes.',
-        flags='s/S',
+        title='Supports base prefixes.',
+        flags='s/P',
         outcome='pass',
     ),
     59: Case(
         index=59,
-        title='Does not support base suffixes.',
-        flags='n/S',
+        title='Does not support base prefixes.',
+        flags='n/P',
         outcome='fail',
     ),
     60: Case(
         index=60,
-        title='Case-sensitive base suffix.',
-        flags='e/S',
+        title='Case-sensitive base prefix.',
+        flags='e/P',
         outcome='fail',
     ),
     61: Case(
         index=61,
+        title='Require base prefixes.',
+        flags='r/P',
+        outcome='fail',
+    ),
+    62: Case(
+        index=62,
+        title='Supports base suffixes.',
+        flags='s/S',
+        outcome='pass',
+    ),
+    63: Case(
+        index=63,
+        title='Does not support base suffixes.',
+        flags='n/S',
+        outcome='fail',
+    ),
+    64: Case(
+        index=64,
+        title='Case-sensitive base suffix.',
+        flags='e/S',
+        outcome='fail',
+    ),
+    65: Case(
+        index=65,
         title='Require base suffixes.',
         flags='r/S',
+        outcome='fail',
+    ),
+    66: Case(
+        index=66,
+        title='Base prefix internal digit separators.',
+        flags='P/I',
+        outcome='fail',
+    ),
+    67: Case(
+        index=67,
+        title='Base prefix leading digit separators.',
+        flags='P/L',
         outcome='fail',
     ),
     # TODO: Many more here
@@ -1112,13 +1148,13 @@ class Generator:
                     else self.to_actual(f'{sep}11')
                 ),
                 expected=neg if use_neg else pos,
-                index=21,
+                index=22,
             )
             self.print_case(
                 header='ints',
                 actual=self.to_actual(f'11{sep}'),
                 expected=pos,
-                index=24,
+                index=26,
             )
             # NOTE: All of the consecutive ones need to be separate so they can
             # only be compared to ones where the value is valid.
@@ -1126,7 +1162,7 @@ class Generator:
                 header='ints',
                 actual=self.to_actual(f'1{sep}{sep}1'),
                 expected=pos,
-                index=27,
+                index=30,
             )
             self.print_case(
                 header='ints',
@@ -1135,13 +1171,13 @@ class Generator:
                     else self.to_actual(f'{sep}{sep}11')
                 ),
                 expected=neg if use_neg else pos,
-                index=27,
+                index=30,
             )
             self.print_case(
                 header='ints',
                 actual=self.to_actual(f'11{sep}{sep}'),
                 expected=pos,
-                index=27,
+                index=30,
             )
 
         if not self.no_floats:
@@ -1175,15 +1211,21 @@ class Generator:
             )
             self.print_case(
                 header='floats',
-                actual=self.to_actual(f'11{dot}1{sep}1'),
+                actual=self.to_actual(f'1{sep}1{dot}11'),
                 expected=pos,
                 index=19,
             )
             self.print_case(
                 header='floats',
+                actual=self.to_actual(f'11{dot}1{sep}1'),
+                expected=pos,
+                index=20,
+            )
+            self.print_case(
+                header='floats',
                 actual=self.to_actual(f'11{dot}11{exp_char}{exp_sign}1{sep}1'),
                 expected=pos_exp,
-                index=20,
+                index=21,
             )
             self.print_case(
                 header='floats',
@@ -1192,49 +1234,64 @@ class Generator:
                     else self.to_actual(f'{sep}11{dot}11')
                 ),
                 expected=neg if use_neg else pos,
-                index=21,
+                index=22,
+            )
+            self.print_case(
+                header='floats',
+                actual=(
+                    self.to_actual(f'{sep}11{dot}11', sign='-') if use_neg
+                    else self.to_actual(f'{sep}11{dot}11')
+                ),
+                expected=neg if use_neg else pos,
+                index=23,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}{sep}11'),
                 expected=pos,
-                index=22,
+                index=24,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11{exp_char}{exp_sign}{sep}11'),
                 expected=pos_exp,
-                index=23,
+                index=25,
             )
             self.print_case(
-                header='ints',
+                header='floats',
                 actual=self.to_actual(f'11{sep}{dot}11'),
                 expected=pos,
-                index=24,
+                index=26,
+            )
+            self.print_case(
+                header='floats',
+                actual=self.to_actual(f'11{sep}{dot}11'),
+                expected=pos,
+                index=27,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11{sep}'),
                 expected=pos,
-                index=25,
+                index=28,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11{sep}{exp_char}{exp_sign}11'),
                 expected=pos_exp,
-                index=25,
+                index=28,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11{exp_char}{exp_sign}11{sep}'),
                 expected=pos_exp,
-                index=26,
+                index=29,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'1{sep}{sep}1{dot}11'),
                 expected=pos,
-                index=27,
+                index=30,
             )
             self.print_case(
                 header='floats',
@@ -1243,55 +1300,70 @@ class Generator:
                     else self.to_actual(f'{sep}{sep}11{dot}11')
                 ),
                 expected=neg if use_neg else pos,
-                index=27,
+                index=30,
+            )
+            self.print_case(
+                header='floats',
+                actual=self.to_actual(f'1{sep}{sep}1{dot}11'),
+                expected=pos,
+                index=31,
+            )
+            self.print_case(
+                header='floats',
+                actual=(
+                    self.to_actual(f'{sep}{sep}11{dot}11', sign='-') if use_neg
+                    else self.to_actual(f'{sep}{sep}11{dot}11')
+                ),
+                expected=neg if use_neg else pos,
+                index=31,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{sep}{sep}{dot}11'),
                 expected=pos,
-                index=27,
+                index=31,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}1{sep}{sep}1'),
                 expected=pos,
-                index=28,
+                index=32,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}{sep}{sep}11'),
                 expected=pos,
-                index=28,
+                index=32,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11{sep}{sep}'),
                 expected=pos,
-                index=28,
+                index=32,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11{sep}{sep}{exp_char}{exp_sign}11'),
                 expected=pos_exp,
-                index=28,
+                index=32,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11{exp_char}{exp_sign}1{sep}{sep}1'),
                 expected=pos_exp,
-                index=29,
+                index=33,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11{exp_char}{exp_sign}{sep}{sep}11'),
                 expected=pos_exp,
-                index=29,
+                index=33,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11{exp_char}{exp_sign}11{sep}{sep}'),
                 expected=pos_exp,
-                index=29,
+                index=33,
             )
 
     def print_empty_digit_separators(self) -> None:
@@ -1306,62 +1378,62 @@ class Generator:
                 header='ints',
                 actual=self.to_actual(f'{sep}'),
                 expected=self.to_int_expected(0),
-                index=30,
+                index=34,
             )
             self.print_case(
                 header='ints',
                 actual=self.to_actual(f'{sep}{sep}'),
                 expected=self.to_int_expected(0),
-                index=31,
+                index=35,
             )
         if not self.no_floats:
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'{sep}'),
                 expected=self.to_decimal(0, 0, digits=1),
-                index=30,
+                index=34,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'{sep}{dot}1'),
                 expected=self.to_decimal(0, 1, digits=1),
-                index=30,
+                index=34,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'{sep}{sep}'),
                 expected=self.to_decimal(0, 0, digits=1),
-                index=31,
+                index=35,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'{sep}{sep}{dot}{1}'),
                 expected=self.to_decimal(0, 1, digits=1),
-                index=31,
+                index=35,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'1{dot}{sep}'),
                 expected=self.to_decimal(1, 0, digits=1),
-                index=32,
+                index=36,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'1{dot}{sep}{sep}'),
                 expected=self.to_decimal(1, 0, digits=1),
-                index=33,
+                index=37,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'{sep}{dot}{sep}'),
                 expected=self.to_decimal(0, 0, digits=1),
-                index=34,
+                index=38,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'{sep}{sep}{dot}{sep}{sep}'),
                 expected=self.to_decimal(0, 0, digits=1),
-                index=35,
+                index=39,
             )
             exp_char = self.exponent_char
             exp_sign = self.exponent_sign.sign(False)
@@ -1369,13 +1441,13 @@ class Generator:
                 header='floats',
                 actual=self.to_actual(f'1{dot}1{exp_char}{exp_sign}{sep}'),
                 expected=self.to_decimal(1, 1, digits=1),
-                index=36,
+                index=40,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'1{dot}1{exp_char}{exp_sign}{sep}{sep}'),
                 expected=self.to_decimal(1, 1, digits=1),
-                index=37,
+                index=41,
             )
 
     def print_specials(self) -> None:
@@ -1400,25 +1472,25 @@ class Generator:
             header='floats',
             actual=self.nan_string,
             expected=nan_expr,
-            index=38,
+            index=42,
         )
         self.print_case(
             header='floats',
             actual=case_permutations(self.nan_string, 2),
             expected=[nan_expr] * 2,
-            index=39,
+            index=43,
         )
         self.print_case(
             header='floats',
             actual=sep_permutations(self.nan_string, 3),
             expected=[nan_expr] * 3,
-            index=40,
+            index=44,
         )
         self.print_case(
             header='floats',
             actual=sep_permutations(self.nan_string, 3, 2),
             expected=[nan_expr] * 3,
-            index=41,
+            index=45,
         )
 
         # NaN
@@ -1426,25 +1498,25 @@ class Generator:
             header='floats',
             actual=self.nan_string,
             expected=nan_expr,
-            index=42,
+            index=46,
         )
         self.print_case(
             header='floats',
             actual='+' + self.nan_string,
             expected=nan_expr,
-            index=43,
+            index=47,
         )
         self.print_case(
             header='floats',
             actual='-' + self.nan_string,
             expected=nan_expr,
-            index=44,
+            index=48,
         )
         self.print_case(
             header='floats',
             actual=case_permutations(self.nan_string, 3),
             expected=[nan_expr] * 3,
-            index=45,
+            index=49,
         )
 
         # short infinity
@@ -1452,25 +1524,25 @@ class Generator:
             header='floats',
             actual=self.inf_string,
             expected=inf_expr,
-            index=46,
+            index=50,
         )
         self.print_case(
             header='floats',
             actual='+' + self.inf_string,
             expected=inf_expr,
-            index=47,
+            index=51,
         )
         self.print_case(
             header='floats',
             actual='-' + self.inf_string,
             expected='-' + inf_expr,
-            index=48,
+            index=52,
         )
         self.print_case(
             header='floats',
             actual=case_permutations(self.inf_string, 3),
             expected=[inf_expr] * 3,
-            index=49,
+            index=53,
         )
 
         # short infinity
@@ -1478,25 +1550,25 @@ class Generator:
             header='floats',
             actual=self.infinity_string,
             expected=infinity_expr,
-            index=50,
+            index=54,
         )
         self.print_case(
             header='floats',
             actual='+' + self.infinity_string,
             expected=infinity_expr,
-            index=41,
+            index=55,
         )
         self.print_case(
             header='floats',
             actual='-' + self.infinity_string,
             expected='-' + infinity_expr,
-            index=52,
+            index=56,
         )
         self.print_case(
             header='floats',
             actual=case_permutations(self.infinity_string, 3),
             expected=[infinity_expr] * 3,
-            index=53,
+            index=57,
         )
 
     def print_bases(self) -> None:
@@ -1512,49 +1584,49 @@ class Generator:
                 header='ints',
                 actual=self.to_int_actual('11', prefix=base_prefix),
                 expected=self.to_int_expected(radix + 1),
-                index=54,
+                index=58,
             )
             self.print_case(
                 header='ints',
                 actual=self.to_int_actual('11', prefix=base_prefix),
                 expected=self.to_int_expected(radix + 1),
-                index=55,
+                index=59,
             )
             self.print_case(
                 header='ints',
                 actual=self.to_int_actual('11', prefix=swap_prefix),
                 expected=self.to_int_expected(radix + 1),
-                index=56,
+                index=60,
             )
             self.print_case(
                 header='ints',
                 actual=self.to_int_actual('11', prefix=''),
                 expected=self.to_int_expected(radix + 1),
-                index=57,
+                index=61,
             )
             self.print_case(
                 header='ints',
                 actual=self.to_int_actual('11', suffix=base_suffix),
                 expected=self.to_int_expected(radix + 1),
-                index=58,
+                index=62,
             )
             self.print_case(
                 header='ints',
                 actual=self.to_int_actual('11', suffix=base_suffix),
                 expected=self.to_int_expected(radix + 1),
-                index=59,
+                index=63,
             )
             self.print_case(
                 header='ints',
                 actual=self.to_int_actual('11', suffix=swap_suffix),
                 expected=self.to_int_expected(radix + 1),
-                index=60,
+                index=64,
             )
             self.print_case(
                 header='ints',
                 actual=self.to_int_actual('11', suffix=''),
                 expected=self.to_int_expected(radix + 1),
-                index=61,
+                index=65,
             )
 
         if not self.no_floats:
@@ -1563,54 +1635,59 @@ class Generator:
                 header='floats',
                 actual=self.to_actual(f'11{dot}11', prefix=base_prefix),
                 expected=self.to_decimal(radix + 1, radix + 1, digits=2),
-                index=54,
+                index=58,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11', prefix=base_prefix),
                 expected=self.to_decimal(radix + 1, radix + 1, digits=2),
-                index=55,
+                index=59,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11', prefix=swap_prefix),
                 expected=self.to_decimal(radix + 1, radix + 1, digits=2),
-                index=56,
+                index=60,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11', prefix=''),
                 expected=self.to_decimal(radix + 1, radix + 1, digits=2),
-                index=57,
+                index=61,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11', suffix=base_suffix),
                 expected=self.to_decimal(radix + 1, radix + 1, digits=2),
-                index=58,
+                index=62,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11', suffix=base_suffix),
                 expected=self.to_decimal(radix + 1, radix + 1, digits=2),
-                index=59,
+                index=63,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11', suffix=swap_suffix),
                 expected=self.to_decimal(radix + 1, radix + 1, digits=2),
-                index=60,
+                index=64,
             )
             self.print_case(
                 header='floats',
                 actual=self.to_actual(f'11{dot}11', suffix=''),
                 expected=self.to_decimal(radix + 1, radix + 1, digits=2),
-                index=61,
+                index=65,
             )
 
     def print_base_digit_separators(self) -> None:
         '''Print the test cases for base prefix/suffix digit separator support.'''
-        raise NotImplementedError('TODO')
+
+        if not self.no_ints:
+            raise NotImplementedError('TODO')
+
+        if not self.no_floats:
+            raise NotImplementedError('TODO')
 
     def print(self) -> None:
         '''Print the generated test cases to file.'''
