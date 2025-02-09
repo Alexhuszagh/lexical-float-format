@@ -690,15 +690,110 @@ cases: dict[int, Case] = {
         index=66,
         title='Base prefix internal digit separators.',
         flags='P/I',
-        outcome='fail',
+        outcome='pass',
     ),
     67: Case(
         index=67,
         title='Base prefix leading digit separators.',
         flags='P/L',
+        outcome='pass',
+    ),
+    68: Case(
+        index=68,
+        title='Base prefix trailing digit separators.',
+        flags='P/T',
+        outcome='pass',
+    ),
+    69: Case(
+        index=69,
+        title='Base prefix consecutive digit separators.',
+        flags='P/C',
+        outcome='pass',
+    ),
+    70: Case(
+        index=70,
+        title='Base suffix internal digit separators.',
+        flags='S/I',
+        outcome='pass',
+    ),
+    71: Case(
+        index=71,
+        title='Base suffix leading digit separators.',
+        flags='S/L',
+        outcome='pass',
+    ),
+    72: Case(
+        index=72,
+        title='Base suffix trailing digit separators.',
+        flags='S/T',
+        outcome='pass',
+    ),
+    73: Case(
+        index=73,
+        title='Base suffix consecutive digit separators.',
+        flags='S/C',
+        outcome='pass',
+    ),
+    74: Case(
+        index=74,
+        title='No unsigned integer negative sign.',
+        flags='-/U',
         outcome='fail',
     ),
-    # TODO: Many more here
+    75: Case(
+        index=75,
+        title='No mantissa positive or negative sign.',
+        flags='-/M',
+        outcome='fail',
+    ),
+    76: Case(
+        index=76,
+        title='No exponent positive or negative sign.',
+        flags='-/E',
+        outcome='fail',
+    ),
+    77: Case(
+        index=77,
+        title='Absolute start digit separator.',
+        flags='s/D',
+        outcome='pass',
+    ),
+    78: Case(
+        index=78,
+        title='Integer sign digit separator.',
+        flags='I/s',
+        outcome='pass',
+    ),
+    79: Case(
+        index=79,
+        title='Integer sign consecutive digit separator.',
+        flags='I/c',
+        outcome='pass',
+    ),
+    80: Case(
+        index=80,
+        title='Mantissa sign digit separator.',
+        flags='M/s',
+        outcome='pass',
+    ),
+    81: Case(
+        index=81,
+        title='Mantissa sign consecutive digit separator.',
+        flags='M/c',
+        outcome='pass',
+    ),
+    82: Case(
+        index=82,
+        title='Exponent sign digit separator.',
+        flags='E/s',
+        outcome='pass',
+    ),
+    83: Case(
+        index=83,
+        title='Exponent sign consecutive digit separator.',
+        flags='E/c',
+        outcome='pass',
+    ),
 }
 
 
